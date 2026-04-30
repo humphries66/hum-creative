@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  
+  <defs>
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#252926" stop-opacity="0"></stop>
+      <stop offset="100%" stop-color="#252926" stop-opacity="0.12"></stop>
+    </linearGradient>
+  </defs>
+  <path d="M 60,220 L 60,120 Q 60,40 120,40 Q 180,40 180,120 L 180,220" fill="url(#haze)" stroke="#252926" stroke-width="1.1" stroke-linejoin="round"></path>
+  
+  <line x1="48" y1="220" x2="192" y2="220" stroke="#252926" stroke-width="1.1"></line>
+  
+  <circle cx="120" cy="86" r="4" fill="#bed230"></circle>
+</svg>

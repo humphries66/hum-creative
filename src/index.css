@@ -1,0 +1,282 @@
+/* =========================================================================
+   Hum Creative Co. — Colors & Type
+   ========================================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: "Alternate Gothic No3";
+  src: url("./fonts/AlternateGothicNo3D-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ivy Presto Display";
+  src: url("./fonts/IvyPrestoDisplay-Thin.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ivy Presto Display";
+  src: url("./fonts/IvyPrestoDisplay-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ivy Presto Display";
+  src: url("./fonts/IvyPrestoDisplay-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ivy Presto Display";
+  src: url("./fonts/IvyPrestoDisplay-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ivy Presto Headline";
+  src: url("./fonts/IvyPrestoHeadline-Light.otf") format("opentype");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Ivy Presto Headline";
+  src: url("./fonts/IvyPrestoHeadline-Regular.otf") format("opentype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Ivy Presto Headline";
+  src: url("./fonts/IvyPrestoHeadline-SemiBold.otf") format("opentype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Ivy Presto Text";
+  src: url("./fonts/IvyPrestoText-Light.otf") format("opentype");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Ivy Presto Text";
+  src: url("./fonts/IvyPrestoText-Regular.otf") format("opentype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Ivy Presto Text";
+  src: url("./fonts/IvyPrestoText-SemiBold.otf") format("opentype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Michigan Signature";
+  src: url("./fonts/MichiganSignature.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  --hum-ink:      #252926;
+  --hum-slate:    #5d6962;
+  --hum-moss:     #3a423e;
+  --hum-paper:    #f6f5ed;
+  --hum-linen:    #ebe8d8;
+  --hum-ash:      #c7c3b2;
+  --hum-chartreuse: #bed230;
+  --hum-chartreuse-deep: #9fb01c;
+
+  --fg-1: var(--hum-ink);
+  --fg-2: var(--hum-slate);
+  --fg-3: #8a9189;
+  --fg-accent: var(--hum-chartreuse);
+  --fg-inverse: var(--hum-paper);
+
+  --bg-1: var(--hum-paper);
+  --bg-2: var(--hum-linen);
+  --bg-3: #e1ddca;
+  --bg-ink: var(--hum-ink);
+  --bg-slate: var(--hum-slate);
+
+  --rule: rgba(37, 41, 38, 0.18);
+  --rule-strong: rgba(37, 41, 38, 0.55);
+
+  --font-display:  "Ivy Presto Display", "Ivy Presto Headline", Georgia, serif;
+  --font-headline: "Ivy Presto Headline", "Ivy Presto Display", Georgia, serif;
+  --font-text:     "Ivy Presto Text", Georgia, serif;
+  --font-gothic:   "Alternate Gothic No3", "Oswald", "Arial Narrow", sans-serif;
+  --font-script:   "Michigan Signature", "Snell Roundhand", cursive;
+
+  --fs-display-xl: clamp(72px, 10vw, 168px);
+  --fs-display-l:  clamp(56px, 7vw, 112px);
+  --fs-display-m:  clamp(44px, 5.4vw, 80px);
+  --fs-h1:         clamp(36px, 4.2vw, 60px);
+  --fs-h2:         clamp(28px, 3vw, 44px);
+  --fs-h3:         22px;
+  --fs-h4:         18px;
+  --fs-body-l:     20px;
+  --fs-body:       17px;
+  --fs-body-s:     15px;
+  --fs-caption:    13px;
+  --fs-eyebrow:    13px;
+
+  --lh-display: 0.95;
+  --lh-heading: 1.08;
+  --lh-body:    1.55;
+  --lh-ui:      1.3;
+
+  --tr-display: -0.015em;
+  --tr-heading: -0.01em;
+  --tr-body:    0;
+  --tr-gothic:  0.18em;
+  --tr-gothic-tight: 0.06em;
+
+  --sp-0:  0;
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  96px;
+  --sp-10: 128px;
+  --sp-11: 192px;
+
+  --r-none: 0;
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   6px;
+  --r-pill: 999px;
+
+  --bw-hair: 1px;
+  --bw-med:  1.5px;
+  --bw-thick: 2px;
+
+  --sh-1: 0 1px 0 rgba(37,41,38,0.06), 0 2px 6px rgba(37,41,38,0.04);
+  --sh-2: 0 2px 0 rgba(37,41,38,0.04), 0 10px 28px -12px rgba(37,41,38,0.18);
+  --sh-3: 0 30px 60px -30px rgba(37,41,38,0.35);
+  --sh-inset: inset 0 0 0 1px rgba(37,41,38,0.08);
+
+  --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-enter:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast:   160ms;
+  --dur-base:   260ms;
+  --dur-slow:   520ms;
+}
+
+/* ---------- Global resets ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+
+::selection { background: #bed230; color: #252926; }
+
+/* ---------- Global animations ---------- */
+@keyframes fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(-2deg); }
+  50%       { transform: rotate(2deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-16px); }
+}
+
+.fade { animation: fade 400ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+
+/* ---------- Type ---------- */
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-heading);
+  color: var(--fg-1);
+}
+h2, .h2 {
+  font-family: var(--font-headline);
+  font-weight: 400;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-heading);
+  color: var(--fg-1);
+}
+h3, .h3 {
+  font-family: var(--font-headline);
+  font-weight: 400;
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+  color: var(--fg-1);
+}
+p, .p {
+  font-family: var(--font-text);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+  text-wrap: pretty;
+}
+
+.eyebrow {
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--tr-gothic);
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+.mark {
+  background: linear-gradient(transparent 62%, var(--hum-chartreuse) 62%, var(--hum-chartreuse) 92%, transparent 92%);
+  padding: 0 2px;
+}
+
+.underline-accent {
+  background-image: linear-gradient(var(--hum-chartreuse), var(--hum-chartreuse));
+  background-repeat: no-repeat;
+  background-size: 100% 6px;
+  background-position: 0 92%;
+  padding-bottom: 2px;
+}
+
+.on-ink {
+  background: var(--hum-ink);
+  color: var(--hum-paper);
+}
