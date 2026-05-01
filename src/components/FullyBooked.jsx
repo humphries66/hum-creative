@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Grain, FoundNote, Underline } from './Primitives.jsx';
 
-// ── Logo (copied inline to keep this component self-contained) ────────────────
-const HumLogo = ({ height = 80 }) => (
+// ── Logo (inline so this component stays self-contained) ──────────────────────
+const HumLogo = ({ height = 56 }) => (
   <svg viewBox="0 0 668.45 430.29" style={{ height, width: 'auto', display: 'block' }}>
     <defs><style>{`
       .fb-1 { fill: #252926; }
@@ -29,6 +30,7 @@ const ink = '#252926';
 const paper = '#f6f5ed';
 const slate = '#5d6962';
 const accent = '#bed230';
+const rule = 'rgba(37,41,38,0.18)';
 
 const PROJECT_TYPES = [
   'Brand strategy',
@@ -39,9 +41,34 @@ const PROJECT_TYPES = [
   'Other',
 ];
 
+// Small gothic-cap eyebrow with accent dash
+const Eyebrow = ({ children }) => (
+  <div style={{
+    fontFamily: "'Alternate Gothic No3', sans-serif",
+    fontSize: 13, letterSpacing: '0.22em', textTransform: 'uppercase',
+    color: ink, display: 'inline-flex', alignItems: 'center', gap: 10,
+  }}>
+    <span style={{ display: 'inline-block', width: 28, height: 2, background: accent }} />
+    {children}
+  </div>
+);
+
+const LedgerRow = ({ label, value }) => (
+  <div style={{ borderBottom: '1px dotted currentColor', paddingBottom: 8, marginBottom: 14 }}>
+    <div style={{
+      fontFamily: "'Alternate Gothic No3', sans-serif",
+      fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase',
+      color: slate, marginBottom: 4,
+    }}>{label}</div>
+    <div style={{ fontFamily: "'Ivy Presto Text', serif", fontSize: 15, color: ink, lineHeight: 1.4 }}>
+      {value}
+    </div>
+  </div>
+);
+
 export default function FullyBooked() {
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ email: '', project_type: '' });
+  const [form, setForm] = useState({ email: '', project_type: '', project_description: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,147 +84,198 @@ export default function FullyBooked() {
 
   return (
     <div style={{
-      background: paper, color: ink, minHeight: '100vh',
-      display: 'flex', flexDirection: 'column',
-      padding: '48px 32px',
+      background: paper, color: ink, minHeight: '100vh', position: 'relative',
+      overflow: 'hidden',
     }}>
-      {/* Top: logo */}
-      <header style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <HumLogo height={56} />
-      </header>
+      <Grain opacity={0.45} blend="multiply" />
 
-      {/* Centered content */}
-      <main style={{
-        flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        maxWidth: 720, width: '100%', margin: '0 auto', padding: '60px 0',
-      }}>
-        {/* Eyebrow */}
-        <div style={{
-          fontFamily: "'Alternate Gothic No3', sans-serif",
-          fontSize: 13, letterSpacing: '0.22em', textTransform: 'uppercase',
-          color: ink, display: 'inline-flex', alignItems: 'center', gap: 10,
-          marginBottom: 32,
+      {/* Background motif (subtle, off to one side) */}
+      <img src="/assets/motif-aperture.svg" alt="" style={{
+        position: 'absolute', right: -120, top: 200, width: 520,
+        opacity: 0.06, pointerEvents: 'none', zIndex: 1,
+      }} />
+
+      <div style={{ position: 'relative', zIndex: 2, padding: '40px 32px 32px',
+        display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+
+        {/* Top: logo + ledger metadata bar */}
+        <header>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 32 }}>
+            <HumLogo height={56} />
+            <span style={{
+              fontFamily: "'Michigan Signature', cursive", fontSize: 22, color: slate,
+              transform: 'rotate(-2deg)', transformOrigin: 'right',
+            }}>quietly working —</span>
+          </div>
+          <div style={{
+            borderTop: `2px solid ${ink}`, paddingTop: 12,
+            display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+            fontFamily: "'Alternate Gothic No3', sans-serif", fontSize: 11,
+            letterSpacing: '0.22em', textTransform: 'uppercase', color: ink,
+          }}>
+            <span><span style={{ color: accent }}>●</span> Folio · MMXXVI · Iss. Spring</span>
+            <span>Decatur, Georgia · Selective Intake</span>
+            <span>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+          </div>
+        </header>
+
+        {/* Main: headline + form + ledger */}
+        <main style={{
+          flex: 1, display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 80,
+          alignItems: 'start', padding: '80px 0 60px', maxWidth: 1280, width: '100%',
+          margin: '0 auto', position: 'relative',
         }}>
-          <span style={{ display: 'inline-block', width: 28, height: 2, background: accent }} />
-          Currently · MMXXVI
-        </div>
+          {/* Left column: copy + form */}
+          <div>
+            <Eyebrow>Currently · Selective intake</Eyebrow>
 
-        {/* Headline */}
-        <h1 style={{
-          fontFamily: "'Ivy Presto Display', serif", fontWeight: 200,
-          fontSize: 'clamp(48px, 7vw, 96px)', lineHeight: 1.0, letterSpacing: '-0.025em',
-          margin: 0, color: ink,
-        }}>
-          We&rsquo;re <em style={{ fontWeight: 300, fontStyle: 'italic', color: accent }}>fully booked</em> through the year.
-        </h1>
-
-        {/* Subtext */}
-        <p style={{
-          fontFamily: "'Ivy Presto Text', serif", fontSize: 19, lineHeight: 1.55,
-          color: slate, margin: '32px 0 0', maxWidth: 560,
-        }}>
-          We take on four or five engagements a year. Leave your details and we&rsquo;ll reach out when a spot opens.
-        </p>
-
-        {/* Form / thank you */}
-        <div style={{ marginTop: 48 }}>
-          {sent ? (
-            <div style={{
-              fontFamily: "'Ivy Presto Display', serif", fontWeight: 300, fontStyle: 'italic',
-              fontSize: 32, lineHeight: 1.2, color: ink,
+            <h1 style={{
+              fontFamily: "'Ivy Presto Display', serif", fontWeight: 200,
+              fontSize: 'clamp(48px, 6.4vw, 96px)', lineHeight: 0.98, letterSpacing: '-0.025em',
+              margin: '24px 0 0', color: ink,
             }}>
-              Thank you — we&rsquo;ll be in <span style={{ color: accent }}>touch</span>.
+              We&rsquo;re{' '}
+              <Underline color={accent} size={12}>
+                <em style={{ fontWeight: 300, fontStyle: 'italic' }}>selective</em>
+              </Underline>
+              {' '}about who we<br />work with, not how many.
+            </h1>
+
+            <p style={{
+              fontFamily: "'Ivy Presto Headline', serif", fontWeight: 300,
+              fontSize: 22, lineHeight: 1.5, color: slate,
+              margin: '32px 0 0', maxWidth: 600,
+            }}>
+              Tell us about your project and we&rsquo;ll let you know if it&rsquo;s a fit.
+            </p>
+
+            {/* Form */}
+            <div style={{ marginTop: 56 }}>
+              {sent ? (
+                <div style={{
+                  fontFamily: "'Ivy Presto Display', serif", fontWeight: 300, fontStyle: 'italic',
+                  fontSize: 36, lineHeight: 1.2, color: ink,
+                }}>
+                  Thank you — we&rsquo;ll be in <span style={{ color: accent }}>touch</span>.
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} style={{
+                  display: 'flex', flexDirection: 'column', gap: 28, maxWidth: 560,
+                }}>
+                  <input type="hidden" name="form-name" value="inquiry" />
+
+                  {/* Email */}
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <Eyebrow>Your email</Eyebrow>
+                    <input
+                      type="email" name="email" required
+                      value={form.email}
+                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                      placeholder="you@studio.com"
+                      style={{
+                        fontFamily: "'Ivy Presto Text', serif", fontSize: 18, color: ink,
+                        background: 'transparent', border: 'none',
+                        borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
+                      }}
+                    />
+                  </label>
+
+                  {/* Project type */}
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <Eyebrow>Project type</Eyebrow>
+                    <select
+                      name="project_type" required
+                      value={form.project_type}
+                      onChange={e => setForm(f => ({ ...f, project_type: e.target.value }))}
+                      style={{
+                        fontFamily: "'Ivy Presto Text', serif", fontSize: 18, color: ink,
+                        background: 'transparent', border: 'none',
+                        borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
+                        appearance: 'none', WebkitAppearance: 'none', cursor: 'pointer',
+                        backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23252926' d='M0 0h10L5 6z'/></svg>")`,
+                        backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center',
+                      }}
+                    >
+                      <option value="" disabled>Select one —</option>
+                      {PROJECT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </label>
+
+                  {/* Project description */}
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <Eyebrow>Tell us about it</Eyebrow>
+                    <textarea
+                      name="project_description" rows={4}
+                      value={form.project_description}
+                      onChange={e => setForm(f => ({ ...f, project_description: e.target.value }))}
+                      placeholder="What are you building? What's the brief? What's keeping you up?"
+                      style={{
+                        fontFamily: "'Ivy Presto Text', serif", fontSize: 18, color: ink,
+                        background: 'transparent', border: 'none',
+                        borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
+                        resize: 'vertical',
+                      }}
+                    />
+                  </label>
+
+                  {/* Submit */}
+                  <div style={{ marginTop: 12 }}>
+                    <button type="submit" style={{
+                      fontFamily: "'Alternate Gothic No3', sans-serif",
+                      fontSize: 13, letterSpacing: '0.22em', textTransform: 'uppercase',
+                      background: ink, color: paper, border: 'none',
+                      padding: '20px 36px', cursor: 'pointer',
+                      transition: 'opacity 200ms',
+                    }}
+                      onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+                    >
+                      Send it over →
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} style={{
-              display: 'flex', flexDirection: 'column', gap: 28, maxWidth: 520,
-            }}>
-              <input type="hidden" name="form-name" value="inquiry" />
+          </div>
 
-              {/* Email */}
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <span style={{
-                  fontFamily: "'Alternate Gothic No3', sans-serif",
-                  fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: ink,
-                }}>Your email</span>
-                <input
-                  type="email" name="email" required
-                  value={form.email}
-                  onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                  placeholder="you@studio.com"
-                  style={{
-                    fontFamily: "'Ivy Presto Text', serif", fontSize: 18, color: ink,
-                    background: 'transparent', border: 'none',
-                    borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
-                  }}
-                />
-              </label>
+          {/* Right column: ledger metadata + sticky note */}
+          <aside style={{ position: 'relative', paddingLeft: 32, borderLeft: `1px solid ${rule}` }}>
+            <Eyebrow>The Studio</Eyebrow>
+            <div style={{ marginTop: 20 }}>
+              <LedgerRow label="Based" value="Decatur, Georgia" />
+              <LedgerRow label="Email" value="hum@humcreative.co" />
+              <LedgerRow label="Engagements / yr" value="Four or five." />
+              <LedgerRow label="Currently" value="Reading new briefs." />
+            </div>
 
-              {/* Project type */}
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <span style={{
-                  fontFamily: "'Alternate Gothic No3', sans-serif",
-                  fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: ink,
-                }}>Project type</span>
-                <select
-                  name="project_type" required
-                  value={form.project_type}
-                  onChange={e => setForm(f => ({ ...f, project_type: e.target.value }))}
-                  style={{
-                    fontFamily: "'Ivy Presto Text', serif", fontSize: 18, color: ink,
-                    background: 'transparent', border: 'none',
-                    borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
-                    appearance: 'none', WebkitAppearance: 'none', cursor: 'pointer',
-                    backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23252926' d='M0 0h10L5 6z'/></svg>")`,
-                    backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center',
-                  }}
-                >
-                  <option value="" disabled>Select one —</option>
-                  {PROJECT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                </select>
-              </label>
+            <FoundNote rotate={3} top={280} right={0} width={220} color={accent}>
+              we say no a lot.<br />still standing.
+            </FoundNote>
+          </aside>
+        </main>
 
-              {/* Submit */}
-              <div style={{ marginTop: 12 }}>
-                <button type="submit" style={{
-                  fontFamily: "'Alternate Gothic No3', sans-serif",
-                  fontSize: 13, letterSpacing: '0.22em', textTransform: 'uppercase',
-                  background: accent, color: ink, border: 'none',
-                  padding: '18px 36px', cursor: 'pointer',
-                  transition: 'opacity 200ms',
-                }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-                  onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                >
-                  Send →
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-        paddingTop: 32, borderTop: `1px solid ${ink}18`,
-        fontFamily: "'Alternate Gothic No3', sans-serif",
-        fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: slate,
-      }}>
-        <span>Hum Creative Co. · Ojai, California</span>
-        <span>jared@humcreative.co</span>
-        {/* Hidden archive link — barely visible until hover */}
-        <a
-          href="?archive=true"
-          title="Preview portfolio"
-          style={{
-            color: slate, opacity: 0.25, cursor: 'pointer',
-            textDecoration: 'none', fontSize: 14, transition: 'opacity 200ms',
-          }}
-          onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '0.25'}
-        >·</a>
-      </footer>
+        {/* Footer */}
+        <footer style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+          paddingTop: 24, borderTop: `1px solid ${rule}`,
+          fontFamily: "'Alternate Gothic No3', sans-serif",
+          fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: slate,
+        }}>
+          <span>© Hum Creative Co. MMXXVI</span>
+          <span>Decatur, GA · hum@humcreative.co</span>
+          {/* Hidden archive link — barely visible until hover */}
+          <a
+            href="?archive=true"
+            title="Preview portfolio"
+            style={{
+              color: slate, opacity: 0.25, cursor: 'pointer',
+              textDecoration: 'none', fontSize: 14, transition: 'opacity 200ms',
+            }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '0.25'}
+          >·</a>
+        </footer>
+      </div>
     </div>
   );
 }
