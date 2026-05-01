@@ -9,12 +9,16 @@
   <body>
     <div id="root"></div>
 
-    <!-- Hidden form for Netlify build-time detection -->
+    <!-- Hidden forms for Netlify build-time detection -->
     <form name="contact" netlify hidden>
       <input name="name" type="text" />
       <input name="project" type="text" />
       <input name="budget" type="text" />
       <textarea name="tell"></textarea>
+    </form>
+    <form name="inquiry" netlify hidden>
+      <input name="email" type="email" />
+      <input name="project_type" type="text" />
     </form>
 
     <script type="module" src="/src/main.jsx"></script>

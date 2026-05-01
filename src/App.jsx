@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import VariantA from './components/VariantA.jsx';
 import VariantB from './components/VariantB.jsx';
+import FullyBooked from './components/FullyBooked.jsx';
 import {
   useTweaks, TweaksPanel, TweakSection, TweakRadio,
   TweakColor, TweakToggle, TweakSlider,
 } from './components/TweaksPanel.jsx';
+
+// ── Archive-mode gate ──────────────────────────────────────────────────────────
+// To permanently switch the home page back to the full portfolio,
+// delete this block and the `if (!archiveMode) ...` early return below.
+// To temporarily preview the portfolio: visit /?archive=true
+const archiveMode =
+  typeof window !== 'undefined' &&
+  new URLSearchParams(window.location.search).get('archive') === 'true';
 
 const TWEAK_DEFAULTS = {
   variant: 'A — Maximalist Editorial',
@@ -30,6 +39,13 @@ const TWEAK_DEFAULTS = {
 };
 
 export default function App() {
+  // If the archive query param is not set, show only the FullyBooked landing page.
+  // (To swap back permanently, see the comment by `archiveMode` at the top of this file.)
+  if (!archiveMode) return <FullyBooked />;
+  return <Portfolio />;
+}
+
+function Portfolio() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [page, setPage] = useState('home');
   const [caseId, setCaseId] = useState(1);
