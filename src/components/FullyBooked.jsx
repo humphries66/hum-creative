@@ -41,7 +41,42 @@ const PROJECT_TYPES = [
   'Other',
 ];
 
-// Small gothic-cap eyebrow with accent dash
+// Responsive style block — overrides only what changes on small screens.
+// Inline styles handle everything else.
+const RESPONSIVE_CSS = `
+  .fb-shell { padding: 40px 32px 32px; }
+  .fb-header-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+  .fb-script { font-family: 'Michigan Signature', cursive; font-size: 22px; color: ${slate}; transform: rotate(-2deg); transform-origin: right; }
+  .fb-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .fb-meta-date { display: inline; }
+  .fb-main { display: grid; grid-template-columns: 1.5fr 1fr; gap: 80px; align-items: start; padding: 80px 0 60px; max-width: 1280px; width: 100%; margin: 0 auto; position: relative; }
+  .fb-aside { position: relative; padding-left: 32px; border-left: 1px solid ${rule}; min-height: 480px; }
+  .fb-note-desktop { display: block; }
+  .fb-note-mobile { display: none; }
+  .fb-headline { font-family: 'Ivy Presto Display', serif; font-weight: 200; font-size: clamp(40px, 5.4vw, 80px); line-height: 1.02; letter-spacing: -0.02em; margin: 24px 0 0; color: ${ink}; }
+  .fb-body { font-family: 'Ivy Presto Headline', serif; font-weight: 300; font-size: 22px; line-height: 1.5; color: ${slate}; margin: 32px 0 0; max-width: 600px; }
+  .fb-motif { position: absolute; right: -120px; top: 200px; width: 520px; opacity: 0.06; pointer-events: none; z-index: 1; }
+  .fb-footer { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid ${rule}; font-family: 'Alternate Gothic No3', sans-serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: ${slate}; }
+
+  @media (max-width: 768px) {
+    .fb-shell { padding: 24px 20px; }
+    .fb-header-top { margin-bottom: 20px; }
+    .fb-script { display: none; }
+    .fb-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .fb-meta-date { display: none; }
+    .fb-main { grid-template-columns: 1fr; gap: 48px; padding: 48px 0 40px; }
+    .fb-aside { padding-left: 0; border-left: none; border-top: 1px solid ${rule}; padding-top: 32px; min-height: 0; }
+    .fb-note-desktop { display: none; }
+    .fb-note-mobile { display: block; margin-top: 28px; }
+    .fb-headline { font-size: clamp(32px, 8vw, 52px); }
+    .fb-body { font-size: 17px; margin-top: 24px; }
+    .fb-motif { display: none; }
+    .fb-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .fb-form { max-width: 100% !important; }
+    .fb-submit { width: 100%; }
+  }
+`;
+
 const Eyebrow = ({ children }) => (
   <div style={{
     fontFamily: "'Alternate Gothic No3', sans-serif",
@@ -87,81 +122,74 @@ export default function FullyBooked() {
       background: paper, color: ink, minHeight: '100vh', position: 'relative',
       overflow: 'hidden',
     }}>
+      <style>{RESPONSIVE_CSS}</style>
       <Grain opacity={0.45} blend="multiply" />
 
-      {/* Background motif (subtle, off to one side) */}
-      <img src="/assets/motif-aperture.svg" alt="" style={{
-        position: 'absolute', right: -120, top: 200, width: 520,
-        opacity: 0.06, pointerEvents: 'none', zIndex: 1,
-      }} />
+      <img src="/assets/motif-aperture.svg" alt="" className="fb-motif" />
 
-      <div style={{ position: 'relative', zIndex: 2, padding: '40px 32px 32px',
-        display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className="fb-shell" style={{
+        position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', minHeight: '100vh',
+      }}>
 
-        {/* Top: logo + ledger metadata bar */}
+        {/* Top: logo + script + metadata bar */}
         <header>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 32 }}>
+          <div className="fb-header-top">
             <HumLogo height={56} />
-            <span style={{
-              fontFamily: "'Michigan Signature', cursive", fontSize: 22, color: slate,
-              transform: 'rotate(-2deg)', transformOrigin: 'right',
-            }}>quietly working —</span>
+            <span className="fb-script">quietly working —</span>
           </div>
-          <div style={{
+          <div className="fb-meta" style={{
             borderTop: `2px solid ${ink}`, paddingTop: 12,
-            display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
             fontFamily: "'Alternate Gothic No3', sans-serif", fontSize: 11,
             letterSpacing: '0.22em', textTransform: 'uppercase', color: ink,
           }}>
             <span><span style={{ color: accent }}>●</span> Folio · MMXXVI · Iss. Spring</span>
             <span>Decatur, Georgia · Selective Intake</span>
-            <span>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+            <span className="fb-meta-date">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
           </div>
         </header>
 
         {/* Main: headline + form + ledger */}
-        <main style={{
-          flex: 1, display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 80,
-          alignItems: 'start', padding: '80px 0 60px', maxWidth: 1280, width: '100%',
-          margin: '0 auto', position: 'relative',
-        }}>
-          {/* Left column: copy + form */}
+        <main className="fb-main">
           <div>
-            <Eyebrow>Currently · Selective intake</Eyebrow>
+            <Eyebrow>Now Booking Late 2026</Eyebrow>
 
-            <h1 style={{
-              fontFamily: "'Ivy Presto Display', serif", fontWeight: 200,
-              fontSize: 'clamp(48px, 6.4vw, 96px)', lineHeight: 0.98, letterSpacing: '-0.025em',
-              margin: '24px 0 0', color: ink,
-            }}>
-              We&rsquo;re{' '}
-              <Underline color={accent} size={12}>
-                <em style={{ fontWeight: 300, fontStyle: 'italic' }}>selective</em>
-              </Underline>
-              {' '}about who we<br />work with, not how many.
+            <h1 className="fb-headline">
+              We wanted you to know before you filled this out.
             </h1>
 
-            <p style={{
-              fontFamily: "'Ivy Presto Headline', serif", fontWeight: 300,
-              fontSize: 22, lineHeight: 1.5, color: slate,
-              margin: '32px 0 0', maxWidth: 600,
-            }}>
-              Tell us about your project and we&rsquo;ll let you know if it&rsquo;s a fit.
+            <p className="fb-body">
+              Our retainer slots are spoken for through mid-2026.
+              We&rsquo;re not building a waitlist for the sake of one.
+              But if the work sounds{' '}
+              <Underline color={accent} size={10}>
+                <em style={{ fontWeight: 300, fontStyle: 'italic' }}>right</em>
+              </Underline>
+              , we&rsquo;ll know when it&rsquo;s time.
             </p>
 
             {/* Form */}
             <div style={{ marginTop: 56 }}>
               {sent ? (
-                <div style={{
-                  fontFamily: "'Ivy Presto Display', serif", fontWeight: 300, fontStyle: 'italic',
-                  fontSize: 36, lineHeight: 1.2, color: ink,
-                }}>
-                  Thank you — we&rsquo;ll be in <span style={{ color: accent }}>touch</span>.
+                <div style={{ maxWidth: 560 }}>
+                  <div style={{
+                    fontFamily: "'Ivy Presto Display', serif", fontWeight: 300, fontStyle: 'italic',
+                    fontSize: 'clamp(28px, 4vw, 40px)', lineHeight: 1.2, color: ink,
+                  }}>
+                    Thank you.
+                  </div>
+                  <p style={{
+                    fontFamily: "'Ivy Presto Text', serif", fontSize: 18, lineHeight: 1.55,
+                    color: slate, marginTop: 20,
+                  }}>
+                    No automated response. No drip sequence. Just two people who will read what you wrote.
+                  </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} style={{
-                  display: 'flex', flexDirection: 'column', gap: 28, maxWidth: 560,
-                }}>
+                <form
+                  className="fb-form"
+                  onSubmit={handleSubmit}
+                  style={{ display: 'flex', flexDirection: 'column', gap: 28, maxWidth: 560 }}
+                >
                   <input type="hidden" name="form-name" value="inquiry" />
 
                   {/* Email */}
@@ -176,6 +204,7 @@ export default function FullyBooked() {
                         fontFamily: "'Ivy Presto Text', serif", fontSize: 18, color: ink,
                         background: 'transparent', border: 'none',
                         borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
+                        width: '100%',
                       }}
                     />
                   </label>
@@ -192,6 +221,7 @@ export default function FullyBooked() {
                         background: 'transparent', border: 'none',
                         borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
                         appearance: 'none', WebkitAppearance: 'none', cursor: 'pointer',
+                        width: '100%',
                         backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23252926' d='M0 0h10L5 6z'/></svg>")`,
                         backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center',
                       }}
@@ -213,24 +243,27 @@ export default function FullyBooked() {
                         fontFamily: "'Ivy Presto Text', serif", fontSize: 18, color: ink,
                         background: 'transparent', border: 'none',
                         borderBottom: `1px solid ${ink}50`, padding: '10px 0', outline: 'none',
-                        resize: 'vertical',
+                        resize: 'vertical', width: '100%',
                       }}
                     />
                   </label>
 
                   {/* Submit */}
                   <div style={{ marginTop: 12 }}>
-                    <button type="submit" style={{
-                      fontFamily: "'Alternate Gothic No3', sans-serif",
-                      fontSize: 13, letterSpacing: '0.22em', textTransform: 'uppercase',
-                      background: ink, color: paper, border: 'none',
-                      padding: '20px 36px', cursor: 'pointer',
-                      transition: 'opacity 200ms',
-                    }}
+                    <button
+                      type="submit"
+                      className="fb-submit"
+                      style={{
+                        fontFamily: "'Alternate Gothic No3', sans-serif",
+                        fontSize: 13, letterSpacing: '0.22em', textTransform: 'uppercase',
+                        background: ink, color: paper, border: 'none',
+                        padding: '20px 36px', cursor: 'pointer',
+                        transition: 'opacity 200ms',
+                      }}
                       onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
                       onMouseLeave={e => e.currentTarget.style.opacity = '1'}
                     >
-                      Send it over →
+                      Put us on your radar →
                     </button>
                   </div>
                 </form>
@@ -238,32 +271,40 @@ export default function FullyBooked() {
             </div>
           </div>
 
-          {/* Right column: ledger metadata + sticky note */}
-          <aside style={{ position: 'relative', paddingLeft: 32, borderLeft: `1px solid ${rule}` }}>
+          {/* Ledger column */}
+          <aside className="fb-aside">
             <Eyebrow>The Studio</Eyebrow>
             <div style={{ marginTop: 20 }}>
               <LedgerRow label="Based" value="Decatur, Georgia" />
               <LedgerRow label="Email" value="hum@humcreative.co" />
               <LedgerRow label="Engagements / yr" value="Four or five." />
-              <LedgerRow label="Currently" value="Reading new briefs." />
+              <LedgerRow label="Currently" value="Booking late 2026." />
             </div>
 
-            <FoundNote rotate={3} top={280} right={0} width={220} color={accent}>
+            {/* Desktop: absolute-positioned sticky note */}
+            <div className="fb-note-desktop">
+              <FoundNote rotate={3} top={300} right={0} width={220} color={accent}>
+                we say no a lot.<br />still standing.
+              </FoundNote>
+            </div>
+
+            {/* Mobile: inline sticky note (no absolute positioning) */}
+            <div className="fb-note-mobile" style={{
+              background: accent, padding: '14px 16px',
+              fontFamily: "'Michigan Signature', cursive", fontSize: 22, lineHeight: 1.2,
+              color: ink, transform: 'rotate(2deg)',
+              boxShadow: '0 6px 20px -8px rgba(37,41,38,0.4), 0 1px 0 rgba(0,0,0,0.05)',
+              maxWidth: 220,
+            }}>
               we say no a lot.<br />still standing.
-            </FoundNote>
+            </div>
           </aside>
         </main>
 
         {/* Footer */}
-        <footer style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-          paddingTop: 24, borderTop: `1px solid ${rule}`,
-          fontFamily: "'Alternate Gothic No3', sans-serif",
-          fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: slate,
-        }}>
+        <footer className="fb-footer">
           <span>© Hum Creative Co. MMXXVI</span>
           <span>Decatur, GA · hum@humcreative.co</span>
-          {/* Hidden archive link — barely visible until hover */}
           <a
             href="?archive=true"
             title="Preview portfolio"
