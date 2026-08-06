@@ -1,16 +1,16 @@
 # Portfolio images — status: COMPLETE
 
-All 26 image slots on the site are filled. Sourced from Upwork on Aug 6, 2026 by
+All 28 image slots on the site are filled. Sourced from Upwork on Aug 6, 2026 by
 resolving each portfolio download URL to its signed S3 original in a logged-in
 browser, then downloading and converting to JPG (max 2400px, quality 85).
 
-Originals were 1920–3840px PNGs. Total folder weight ~14 MB.
+Originals were 1920–3840px PNGs. With the seven PDFs the folder is ~41 MB.
 
 ## Naming contract
 
 The page references these filenames directly. To swap any image, drop a
 replacement at the same path — no code change needed. To add a new one, add the
-`<figure class="asset">` block in `dist/index.html` and match the filename here.
+`<figure class="asset">` block in `public/portfolio/index.html` and match the filename here.
 
 | File | What it is | Project |
 |---|---|---|
@@ -48,9 +48,9 @@ local files involved.
 
 ## Covers that open a PDF
 
-Six covers are wrapped in `<a class="doc-link" target="_blank">` and open the
-real, full document from `dist/assets/docs/`. These covers are rendered from
-page 1 of the PDF itself via
+Seven covers are wrapped in `<a class="doc-link" target="_blank">` and open the
+real, full document from `public/portfolio/assets/docs/`. These covers are
+rendered from page 1 of the PDF itself via
 `sips -s format jpeg -s formatOptions 88 --resampleHeightWidthMax 2000` — re-run
 that if a PDF is ever replaced, so cover and document stay in sync.
 
@@ -108,9 +108,11 @@ it redirects to) if you want to add them:
 - BELAY web, three more — `.../files/1c360dc2-aaa6-431b-93b4-bea44514d8f0`,
   `.../files/f90ee26d-48ea-4e7d-9116-4fa5e13e7919`,
   `.../files/ac4e947d-7f47-447a-83ff-1c4b6a0044a8` (Outsourced Accounting guide)
-- BELAY decks, two more — `.../files/6963c1c9-96d2-4406-a948-6c9de4eb4cf2`
-  (F1D — Lisa Seal V3), `.../files/d887ef98-f62b-471d-83eb-a6ad1cc8b587`
-  (Jared Strategy Sales Deck V1)
 
 URL prefix for all of the above:
 `https://www.upwork.com/att/download/portfolio/persons/uid/2059279400302930747/profile/projects/`
+
+Note: that `/att/download/.../files/{id}` endpoint only ever redirects to a
+low-resolution JPG thumbnail. The real PDF lives behind a different Upwork path
+(`/attachment/`), reachable by opening the item's preview in a logged-in
+browser. That is why the deck covers were originally flat images.
