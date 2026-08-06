@@ -2,6 +2,19 @@
   command = "npm run build"
   publish = "dist"
 
+# The graphic-design portfolio is a standalone static page in public/portfolio/,
+# which Vite copies verbatim into dist/ at build time.
+#
+# This rule MUST stay above the SPA catch-all below. Netlify matches redirects in
+# order, so without it a request for the bare /portfolio path falls through to
+# /index.html and renders the React app instead of the portfolio. Deeper paths
+# (/portfolio/assets/...) are real files, and existing files already take
+# precedence over non-forced rules, so they need no rule of their own.
+[[redirects]]
+  from = "/portfolio"
+  to = "/portfolio/index.html"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
