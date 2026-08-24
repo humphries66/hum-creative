@@ -91,6 +91,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+@media (max-width: 900px) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
 /* height:auto is load-bearing - the imgs carry width/height attributes so the
    layout doesn't shift, and without it they render at intrinsic height. */
 img { max-width: 100%; height: auto; }
@@ -262,6 +268,18 @@ p { margin: 0; text-wrap: pretty; }
   padding-top: 12px;
   padding-bottom: 12px;
   backdrop-filter: blur(6px);
+}
+
+@media (max-width: 900px) {
+  .nav {
+    background-attachment: scroll;
+  }
+  .nav.is-stuck {
+    background-image:
+      linear-gradient(rgba(252, 246, 240, .94), rgba(252, 246, 240, .94)),
+      url("../img/hum-bg-texture.jpg");
+    background-attachment: scroll;
+  }
 }
 
 /* Padding, not height, gets the logo link to a 44px touch target - sized off
@@ -476,6 +494,12 @@ p { margin: 0; text-wrap: pretty; }
   position: relative;
   padding: 40px 0 56px;
   background: var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
+}
+
+@media (max-width: 900px) {
+  .gallery {
+    background-attachment: scroll;
+  }
 }
 
 /* .work carries a --gutter of side padding; the rail has to escape it to reach
@@ -1255,7 +1279,7 @@ p { margin: 0; text-wrap: pretty; }
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   opacity: 0;
   /* Hard cut. Any transition here - including the blanket 150ms the
@@ -1712,6 +1736,14 @@ p { margin: 0; text-wrap: pretty; }
 .work,
 .section {
   background: var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .work,
+  .section {
+    background-attachment: scroll;
+  }
 }
 
 /* Every content section rides above the pinned footer. .shout and .studio carry
