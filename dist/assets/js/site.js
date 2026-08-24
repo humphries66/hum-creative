@@ -619,7 +619,7 @@
            card; 30% lifts the hero band so the bottle's top is not sliced off.
            See the [data-focus="right-high"] rule in site.css. */
         focus: 'right-high',
-        description: 'Premium bacanora for people who would rather leave the club than wait behind the rope. Strategy, positioning, identity, packaging, and the bottle itself, modelled in 3D before anyone blew glass. Built on Sonora\u2019s heat, dust and outlaw nerve.',
+        description: 'We didn\'t know what "bacanora" was either until this client approached us to brand a line of spirits. Apparently, it\'s a lil\' less smoky than mezcal and more flavorful than tequila\u2026 and it\'s delicious and now in national distribution.\n\nSince it was illegal in Mexico until 1992, we crafted a brand persona for people who would rather leave the club than wait behind a rope. We owned the strategy, positioning, identity, packaging, and the bottle itself, modeled in 3d before anyone blew glass. Built on Sonora\'s heat, dust, and outlaw spirit.',
         galleryImages: [
           { heading: 'The world' },
           /* Both 16:9, so they sit level rather than ragged. */
