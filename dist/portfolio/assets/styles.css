@@ -1,5 +1,5 @@
 /* =========================================================================
-   HUM Creative Co. — Graphic Design Portfolio
+   HUM Creative Co. - Graphic Design Portfolio
    Stark monochrome. Off-white / near-black per Apple's neutrals.
    ========================================================================= */
 
@@ -12,7 +12,7 @@
   font-style: normal;
   font-display: swap;
 }
-/* Italic accent face — used sparingly, single words */
+/* Italic accent face - used sparingly, single words */
 @font-face {
   font-family: "Ivy Presto Display";
   src: url("fonts/IvyPrestoDisplay-Light.otf") format("opentype");
@@ -338,7 +338,7 @@ figcaption {
   color: var(--gray-light);
 }
 
-/* Covers that open a full PDF. No badge over the artwork — the caption states
+/* Covers that open a full PDF. No badge over the artwork - the caption states
    the format and page count, and the frame lifts on hover. */
 .doc-link {
   display: block;
@@ -374,7 +374,7 @@ figcaption {
 
 /* ---------- Lightbox ----------
    Thumbnails are cropped (object-fit: cover), so the viewer exists to show the
-   whole image. Covers that open a PDF are excluded — they already have a click
+   whole image. Covers that open a PDF are excluded - they already have a click
    action. Enhancement only: without JS the images simply stay static. */
 
 .zoomable { cursor: zoom-in; }
@@ -434,7 +434,7 @@ figcaption {
 
 .lb-count { color: rgba(245, 245, 247, 0.4); margin-left: 12px; }
 
-/* Controls — flat, no chrome, only a brightness shift on hover */
+/* Controls - flat, no chrome, only a brightness shift on hover */
 .lb-btn {
   position: absolute;
   display: flex;
@@ -451,7 +451,7 @@ figcaption {
   font-family: var(--font-text);
   line-height: 1;
   padding: 12px;
-  /* arrows sit over the artwork on narrow screens — keep them legible on light images */
+  /* arrows sit over the artwork on narrow screens - keep them legible on light images */
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
   transition: opacity var(--dur-fast) ease;
 }

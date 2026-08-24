@@ -1,0 +1,1807 @@
+/* =========================================================================
+   Hum Creative Co. - Pulp / Punk
+   Three inks, squared corners, real paper. Mobile-first.
+   ========================================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: "Alternate Gothic No3";
+  src: url("../fonts/AlternateGothicNo3D-Regular.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Ivy Presto Display";
+  src: url("../fonts/IvyPrestoDisplay-Thin.otf") format("opentype");
+  font-weight: 200; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Ivy Presto Text";
+  src: url("../fonts/IvyPrestoText-Light.otf") format("opentype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Ivy Presto Text";
+  src: url("../fonts/IvyPrestoText-Regular.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Michigan Signature";
+  src: url("../fonts/MichiganSignature.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Parent Hum palette */
+  --ink:        #252926;
+  --slate:      #5d6962;
+  --paper:      #f6f5ed;
+  --linen:      #ebe8d8;
+  --ash:        #c7c3b2;
+  --chartreuse: #bed230;
+  --chartreuse-deep: #9fb01c;
+
+  /* Pulp inks - three plates, never five. Rust is produced by multiply. */
+  --acid:      #d2f024;
+  --coral:     #ff785a;
+  --newsprint: #fcf6f0;
+
+  --rule: rgba(37, 41, 38, .18);
+  --rule-ink: rgba(246, 245, 237, .2);
+
+  --font-display:  "Ivy Presto Display", Georgia, serif;
+  --font-text:     "Ivy Presto Text", Georgia, serif;
+  --font-gothic:   "Alternate Gothic No3", "Oswald", "Arial Narrow", sans-serif;
+  --font-script:   "Michigan Signature", "Snell Roundhand", cursive;
+
+  --gutter: 24px;
+
+  --ease:  cubic-bezier(.22, .61, .36, 1);
+  --enter: cubic-bezier(0, 0, .2, 1);
+  --fast: 160ms;
+  --base: 260ms;
+  --slow: 520ms;
+}
+
+@media (min-width: 900px) {
+  :root { --gutter: 64px; }
+}
+
+/* ---------- Reset / base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+/* overflow-x lives on <html>, not <body>. Any ancestor with a non-'visible'
+   overflow becomes the containing block for position:sticky descendants - with
+   it on body, the sticky footer used body's box as its scroll reference instead
+   of the real viewport, so it appeared stuck to the top of the page at some
+   viewport sizes instead of only revealing at the bottom. html is already the
+   document's actual scrolling element, so putting it there guards the same
+   horizontal overflow without introducing a second scroll container. */
+body {
+  margin: 0;
+  background: var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* height:auto is load-bearing - the imgs carry width/height attributes so the
+   layout doesn't shift, and without it they render at intrinsic height. */
+img { max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; transition: opacity var(--fast) var(--ease); }
+a:hover { opacity: .88; }
+
+h1, h2, h3 { margin: 0; font-weight: 400; }
+p { margin: 0; text-wrap: pretty; }
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.u-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--newsprint);
+  padding: 14px 20px;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.skip-link:focus { left: 0; }
+
+/* ---------- Shared type ---------- */
+/* display:flex, not inline-flex. As an inline-level box it sat on a baseline
+   inside a line box of the parent's line-height (26.35px vs its own 18.6px),
+   which pushed it ~10px down from the top of its column - while the form's
+   first label, a block, started flush. That made the two columns of the
+   contact section read as misaligned at the top. Block-level removes the line
+   box; fit-content keeps it shrink-wrapped so the rule and text stay tight.
+   Used exactly once (the contact section), so this is safe to change here. */
+.eyebrow {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.eyebrow::before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  background: var(--chartreuse);
+  flex: none;
+}
+
+/* Poster register: Alternate Gothic, caps, tight. 100px+ only. */
+.poster {
+  font-family: var(--font-gothic);
+  font-size: clamp(56px, 11vw, 104px);
+  line-height: .88;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.script {
+  font-family: var(--font-script);
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--slate);
+  opacity: .85;
+  transform: rotate(-3.5deg);
+  margin: 0;
+}
+
+.underline-accent {
+  background-image: linear-gradient(var(--chartreuse), var(--chartreuse));
+  background-repeat: no-repeat;
+  background-size: 100% 6px;
+  background-position: 0 92%;
+  padding-bottom: 2px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-gothic);
+  font-size: 13px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity var(--base) var(--ease);
+}
+.btn:hover { opacity: .88; }
+.btn:active { opacity: .76; }
+
+.btn--primary   { background: var(--ink); color: var(--newsprint); }
+.btn--secondary { background: transparent; color: var(--ink); border: 1px solid var(--ink); padding: 15px 27px; }
+.btn--acid      { background: var(--acid); color: var(--ink); }
+.btn--sm        { padding: 11px 18px; font-size: 11px; min-height: 44px; }
+
+.btn--primary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px var(--ink), 0 0 0 3px var(--newsprint), 0 0 0 4px var(--chartreuse);
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px var(--gutter);
+  border-bottom: 1px solid transparent;
+  transition: background var(--base) var(--ease),
+              border-color var(--base) var(--ease),
+              padding var(--base) var(--ease);
+  /* Opaque, not transparent - same texture as .hero, painted at the same
+     screen pixels (background-attachment: fixed anchors it to the viewport,
+     not the element), so this is invisible in the normal case: it looks
+     exactly like seeing hero through a transparent nav, because it IS the
+     same image at the same position.
+
+     It has to be opaque because the sticky footer's box is pinned to the
+     viewport bottom from the moment the page loads (that's correct, expected
+     sticky-bottom behavior - verified identical in Motion's own reference
+     implementation) and is only ever hidden because opaque, higher-stacked
+     content sits on top of it as you scroll. Nav has the highest z-index on
+     the page (50); if it has no fill of its own, it's the one gap in that
+     stack, and on any viewport short enough that the footer's height comes
+     within nav's own height of the viewport height, the dark footer paints
+     straight through it. This closes that gap unconditionally rather than
+     bounding footer/viewport sizes against each other. */
+  background: var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
+}
+/* Set once the hero has scrolled past - the nav settles onto the page. */
+.nav.is-stuck {
+  /* Layered, not replaced - a plain override here would remove the texture
+     .nav now always carries, which is what keeps it opaque against the footer
+     (see .nav's own comment). The flat tint sits on top of the same texture
+     image, at the same anchored position, so the cream wash reads identically
+     to before. */
+  background:
+    linear-gradient(rgba(252, 246, 240, .94), rgba(252, 246, 240, .94)),
+    var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
+  border-bottom-color: var(--rule);
+  padding-top: 12px;
+  padding-bottom: 12px;
+  backdrop-filter: blur(6px);
+}
+
+/* Padding, not height, gets the logo link to a 44px touch target - sized off
+   the shrunken 28px mark it shows once the nav is stuck, not the 34px one. */
+.nav__logo { display: block; line-height: 0; padding: 8px 0; }
+.nav__logo-mark {
+  height: 34px;
+  width: auto;
+  display: block;
+  transition: height var(--base) var(--ease);
+  /* The 12 paths carry no fill of their own, so they inherit this one - which
+     is what keeps the mark a single flat colour at every instant rather than a
+     gradient. site.js rewrites --logo-ink; this value is what shows before JS
+     runs, if JS fails, and under prefers-reduced-motion. */
+  fill: var(--logo-ink, #383838);
+}
+.nav.is-stuck .nav__logo-mark { height: 28px; }
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.nav__links a:not(.btn) {
+  /* 12px vertical clears a 44px touch target on mouse-less screens; the
+     desktop rule below tightens it back up. */
+  padding: 12px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--base) var(--ease);
+}
+.nav__links a:not(.btn):hover { border-bottom-color: var(--chartreuse); opacity: 1; }
+
+/* On a narrow screen the nav CTA is what goes, not the links - the hero
+   already carries a contact CTA, but /portfolio is reachable nowhere else. */
+.nav__link { display: inline-block; }
+.nav__links { gap: 14px; }
+.nav__links .btn { display: none; }
+
+@media (min-width: 700px) {
+  .nav__links { gap: 18px; }
+  .nav__links .btn { display: inline-flex; }
+  .nav__links a:not(.btn) { padding: 6px 0; }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  min-height: calc(100vh - 70px);
+  min-height: calc(100svh - 70px);
+  padding: 32px var(--gutter) 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+}
+
+/* align-self:stretch is load-bearing. h1 is a flex item under .hero's
+   align-items:center, so it normally shrinks to fit its content's own
+   intrinsic size - fine for a single <img> (a replaced element sizes itself
+   even at width:100% in an indeterminate container), but .hero__mark is now
+   a plain <div> with no intrinsic size of its own, so it contributed nothing
+   to that shrink-to-fit measurement and h1 collapsed to 0, taking every
+   layer inside it to 0 too. Stretching h1 gives it hero's real content width
+   to resolve percentages against instead. */
+.hero h1 { margin: 0; line-height: 0; align-self: stretch; }
+
+.hero__mark {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  /* h1 is full-width now (see .hero h1), so this needs its own centering -
+     it no longer inherits it for free from a shrink-wrapped, flex-centered h1. */
+  margin-inline: auto;
+  /* Was a single <img>'s own intrinsic ratio; now the wrapper has no natural
+     size of its own (its children are absolutely positioned out of flow), so
+     this stands in for it - same job, same effect on the width:auto rules
+     below. */
+  aspect-ratio: 2175 / 1372;
+  display: block;
+}
+
+/* One canvas, five PNGs, all 2175x1372 - they line up because nothing here
+   repositions or resizes any of them relative to the others. */
+.hero__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero__layer--raccoon { mix-blend-mode: multiply; }
+
+/* "BORING MUST DIE" runs as a failing neon tube: two hard blinks about a
+   second apart, then steady for the rest of the cycle.
+
+   FLASH RATE IS THE CONSTRAINT, not the look. WCAG 2.3.1 allows at most three
+   flashes in any one-second window; more than that is a photosensitive-seizure
+   risk. The two blinks here fall at 4.80s and 5.70s - 2.06 flashes per second
+   across that window, and none at all for the other five seconds. Do not
+   tighten the gap between them without recounting.
+
+   The glow is STATIC and only the opacity animates. Dimming the layer dims its
+   drop-shadow along with it, so it still reads as the tube losing power, but
+   the filter value never changes and the browser never re-rasterizes the
+   shadow on a 2175x1372 surface mid-animation.
+
+   Killed outright under prefers-reduced-motion by the global rule near the end
+   of this file; with the animation off the layer sits at its natural opacity 1. */
+.hero__layer--neon {
+  filter: drop-shadow(0 0 8px rgba(255, 120, 90, .45));
+  animation: neon-flicker 6s linear infinite;
+}
+
+@keyframes neon-flicker {
+  /* The 0.2% gaps (12ms) are what make each edge read as a hard cut rather
+     than a fade - the blink is snappy even though the flash RATE is slow. */
+  0%,     79.8% { opacity: 1; }
+  80.0%,  81.6% { opacity: .22; }
+  81.8%,  94.8% { opacity: 1; }
+  95.0%,  96.0% { opacity: .34; }
+  96.2%, 100%   { opacity: 1; }
+}
+
+/* Live text standing in for the old hero-tagline.png layer. Position/width
+   are the measured alpha bounding box of that PNG (as % of the 2175x1372
+   canvas) - not eyeballed - so this sits exactly where the image sat and
+   scales with .hero__mark the same way the image layers do.
+
+   No grain/texture here: .misreg (the screenprint double-print effect) is
+   explicitly "once per page" and already spent on "PROUD," and there's no
+   other reusable texture treatment in this file. Going clean matches
+   .shout__word (the NOBODY CARES band) - already coral/paper Alternate
+   Gothic with no grain - rather than inventing a new type treatment. */
+.hero__tagline {
+  position: absolute;
+  left: 59.40%;
+  top: 12.83%;
+  width: 28.51%;
+  color: var(--coral);
+  font-family: var(--font-gothic);
+  text-transform: uppercase;
+  line-height: .95;
+  letter-spacing: .01em;
+  white-space: pre-line;
+  font-size: clamp(9px, 2.6vw, 20px);
+  /* Static - never touched by JS. On an absolutely-positioned box a
+     transform is compositor-only, so this can't shift .hero__mark's other
+     layers or .hero__actions beneath it. */
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+/* .hero__tagline sets text-transform:uppercase for the rest of the phrase -
+   override it here or "Yourself" would render as YOURSELF regardless of the
+   mixed case actually authored in the markup/phrase string. */
+.hero__tagline-jacquard {
+  font-family: 'Jacquard 24', var(--font-gothic);
+  text-transform: none;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+}
+
+@media (min-width: 700px) {
+  .hero { gap: 48px; }
+  .hero__actions { flex-direction: row; justify-content: center; max-width: none; width: auto; gap: 16px; }
+  .hero__actions .btn { min-height: 52px; }
+
+  /* Size the mark off the viewport *height*, not the width - it is the whole
+     hero, and the CTAs underneath have to stay above the fold on a laptop.
+
+     Width is computed explicitly rather than left auto + capped by max-width.
+     An <img> (a replaced element) re-solves BOTH dimensions together when a
+     definite height collides with max-width, preserving its ratio no matter
+     which constraint binds - that's what this relied on before. .hero__mark
+     is a plain div now; aspect-ratio only fills in whichever ONE dimension is
+     auto from the other, so if height stayed definite here, max-width would
+     just clip the derived width on its own, leaving height unchanged and the
+     image distorted. Solving for width up front and deriving height from IT
+     keeps a single source of truth, whichever bound ends up binding. */
+  .hero__mark {
+    width: min(min(56vh, 620px) * 1.5852769679300291, 90vw);
+    height: auto;
+  }
+}
+
+/* Short-and-wide (laptop) screens: let the width take over again. */
+@media (min-width: 700px) and (min-aspect-ratio: 2/1) {
+  .hero__mark { height: auto; width: min(60vw, 900px); }
+}
+
+/* ---------- Portfolio gallery ----------
+   Deliberate departure from "squared corners" (see file header) - rounded
+   corners here are a specific, repeated brief requirement for this one
+   component, not a change to the house rule. Nothing else on the page
+   gets this treatment. */
+.gallery {
+  /* Nested inside .work (it replaced the ink slab that used to sit there), so
+     this is no longer a top-level section. position:relative stays because the
+     arrow is absolutely positioned from it - and because the view-timeline
+     below is declared on this element. */
+  position: relative;
+  padding: 40px 0 56px;
+  background: var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
+}
+
+/* .work carries a --gutter of side padding; the rail has to escape it to reach
+   the viewport edges. The rail keeps its own gutter padding, so the first card
+   still lines up with the headline above it - only the fade and the overhang
+   move out to the page edges. */
+.work .gallery { margin-inline: calc(var(--gutter) * -1); }
+
+.gallery__rail {
+  /* How many cards fit across the visible area. Deliberately FRACTIONAL - see
+     .gallery__card. Overridden per breakpoint below. */
+  --gallery-visible: 1.15;
+  --gallery-gap: 16px;
+  --gallery-fade: 44px;   /* per-edge fade width; applied BOTH sides */
+
+  /* Vertical breathing room for the tilt below. The rail is overflow-y:hidden,
+     and rotating a ~310x413 card by 2deg pushes its corners ~6px past the
+     upright box top and bottom; without this they are sliced off. */
+  --gallery-tilt-room: 14px;
+
+  display: flex;
+  gap: var(--gallery-gap);
+  padding: var(--gallery-tilt-room) var(--gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* No scroll-snap. The cards carry the drift animation, and snap re-aligns
+     to them as they move - measured, the rail's scrollLeft tracked the
+     transform 1:1 and cancelled the drift to under half a pixel of real
+     movement. Snap was also already being disabled during every infinite-loop
+     jump, so removing it drops a special case rather than adding one. */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.gallery__rail::-webkit-scrollbar { display: none; }
+
+/* Cards dissolve at BOTH edges rather than being sliced by a hard border, so
+   the rail reads as "continues off-screen" instead of "clipped by a container".
+   Symmetric because the rail loops infinitely - there is always real content
+   just past either edge, so fading only the right would understate it. */
+.gallery__rail {
+  -webkit-mask-image: linear-gradient(to right, transparent 0,
+                       #000 var(--gallery-fade),
+                       #000 calc(100% - var(--gallery-fade)), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0,
+                       #000 var(--gallery-fade),
+                       #000 calc(100% - var(--gallery-fade)), transparent 100%);
+}
+
+/* ---------- Gallery: "more" control ----------
+   Originally out of scope (the brief ruled out arrows), added later at the
+   user's request to make the horizontal axis unmistakable. A real button, not
+   decoration - it scrolls the rail, so it earns its place rather than just
+   pointing. Sits over the fade at the right edge. */
+.gallery__next {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--gutter) - 8px);
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--newsprint);
+  cursor: pointer;
+  transition: transform var(--base) var(--ease), opacity var(--fast) var(--ease);
+}
+.gallery__next svg { width: 16px; height: 16px; }
+.gallery__next:hover { transform: translateY(-50%) translateX(3px); }
+.gallery__next:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.gallery__card {
+  position: relative;
+  flex: none;
+  /* Sized so a FRACTION of a card is always cut by the right edge, at every
+     viewport width. With a fixed card width the amount of the next card left
+     showing swings with the window: measured at 300px cards it was 4% visible
+     at 1100px wide and 11% at 1440px - both of which read as a centred,
+     contained block of cards rather than a rail that continues off-screen.
+     A fractional --gallery-visible makes that overhang constant instead. */
+  width: calc(
+    (100% - (var(--gallery-gap) * (var(--gallery-visible) - 1)))
+    / var(--gallery-visible)
+  );
+  aspect-ratio: 3 / 4;   /* height follows width, so proportions hold */
+  max-height: 520px;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  background: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.gallery__card:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* Each card sits at its own slightly-off angle - the same pinned-up-by-hand
+   read the three cards in the old ink slab had.
+
+   Two things about this are load-bearing:
+
+   1. It is the `rotate` property, NOT transform: rotate(). The drift animation
+      below animates `transform`, and a transform here would simply be
+      overwritten by it. `rotate` is a separate property that composes with it.
+
+   2. The cycle length MUST equal PROJECTS.length in site.js - currently 6.
+      The rail renders three copies of the set (lead clones, real set, trail
+      clones) and the infinite loop jumps by exactly one set width. At any
+      other cycle length a project's three copies carry different angles, so a
+      card visibly snaps to a new angle at the jump - which is precisely what
+      makes the loop seam, otherwise invisible, visible.
+
+      ADDING OR REMOVING A PROJECT MEANS CHANGING THE 6n BELOW AND ADDING OR
+      REMOVING A STOP. This has already been stepped through once, 5n -> 6n,
+      when ESTACA was added. */
+.gallery__card:nth-child(6n+1) { rotate: -2deg; }
+.gallery__card:nth-child(6n+2) { rotate: 1.3deg; }
+.gallery__card:nth-child(6n+3) { rotate: -1deg; }
+.gallery__card:nth-child(6n+4) { rotate: 2.1deg; }
+.gallery__card:nth-child(6n+5) { rotate: -1.6deg; }
+.gallery__card:nth-child(6n+6) { rotate: 0.9deg; }
+
+/* Rotation is decoration, same as the drift. */
+@media (prefers-reduced-motion: reduce) {
+  .gallery__card { rotate: none; }
+}
+
+/* Scroll-linked drift: the cards slide left as the gallery travels up through
+   the viewport. Driven by the reader's own scrolling, so it is never ambient
+   motion - it stops the instant they stop - but it makes the horizontal axis
+   obvious in a way a one-shot nudge did not.
+
+   The named view-timeline lives on .gallery rather than using view() on the
+   cards themselves: the rail is a scroll container (overflow-y: hidden counts),
+   so view() resolved against the cards would measure the wrong scrollport.
+
+   Guarded by @supports because without scroll-driven animation support the
+   declaration below would fall back to the default time timeline and, with no
+   duration, snap straight to the end state and sit there permanently. */
+@supports (animation-timeline: view()) and (animation-range: entry 0% exit 100%) {
+  .gallery { view-timeline-name: --gallery-view; view-timeline-axis: block; }
+
+  /* +-75px = 150px of travel (was 120). */
+  @keyframes gallery-drift {
+    from { transform: translateX(75px); }
+    to   { transform: translateX(-75px); }
+  }
+
+  .gallery__card {
+    /* Decelerating, not linear. On a scroll-driven timeline the easing maps
+       scroll progress to distance, so a strong ease-out means the cards cover
+       most of their travel early and then visibly settle - which is what makes
+       it read as "someone swiped this and it's coming to rest" rather than a
+       constant-rate slide tied to the scrollbar. */
+    animation: gallery-drift cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-timeline: --gallery-view;
+    animation-range: entry 0% exit 100%;
+  }
+
+  /* Transforms are decorative motion; honour the reduced-motion preference. */
+  @media (prefers-reduced-motion: reduce) {
+    .gallery__card { animation: none; }
+  }
+}
+
+/* Some covers put their subject off-centre, and a centred object-fit crop
+   cuts it. A `focus` value on the project data sets this attribute; the rules
+   live here rather than inline so the house no-inline-styles rule holds.
+   The axis differs by context - in the 3:4 card the source square is cropped
+   horizontally, in the wide hero it is cropped vertically - so a single value
+   legitimately serves both. */
+.gallery__card-img[data-focus="right"],
+.gallery__detail-img[data-focus="right"] { object-position: 68% center; }
+.gallery__card-img[data-focus="left"],
+.gallery__detail-img[data-focus="left"]  { object-position: 32% center; }
+
+/* Both axes at once, for a 16:9 source that needs a different bias in each
+   context. Measured on the ESTACA cover: the 3:4 card keeps only 42.8% of the
+   width (so X matters, Y is fully shown), while the 2.29:1 hero crops 22.5%
+   of the height (so Y matters, X is fully shown). Because the two contexts
+   crop on opposite axes, a single pair satisfies both - X biases the card
+   right onto the bottle, Y lifts the hero band off the tabletop. */
+.gallery__card-img[data-focus="right-high"],
+.gallery__detail-img[data-focus="right-high"] { object-position: 68% 30%; }
+
+.gallery__card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery__card-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 20px 20px 18px;
+  background: linear-gradient(to top, rgba(37, 41, 38, .85), rgba(37, 41, 38, 0) 70%);
+  text-align: left;
+}
+
+.gallery__card-title {
+  margin: 0 0 4px;
+  font-family: var(--font-gothic);
+  font-size: 20px;
+  line-height: 1.05;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--newsprint);
+  font-weight: 400;
+}
+
+.gallery__card-category {
+  margin: 0;
+  font-family: var(--font-gothic);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(246, 245, 237, .72);
+}
+
+@media (min-width: 700px) {
+  .gallery__rail { --gallery-visible: 2.4; --gallery-fade: 100px; }
+  .gallery__card-title { font-size: 22px; }
+}
+
+@media (min-width: 900px) {
+  /* 3 full cards plus a clear slice of the 4th, at any desktop width. */
+  .gallery__rail { --gallery-visible: 3.6; --gallery-gap: 20px; --gallery-fade: 180px; }
+}
+
+/* ---------- Portfolio gallery: horizontal strip ----------
+   Default variant is for work that is ONE continuous image cut into frames:
+   the frames butt together with zero gap and no radius, because any gap or
+   rounding would invent seams the artwork does not have, which is the whole
+   point of the piece. The --deck variant below is the opposite case.
+
+   Either way it scrolls horizontally and bleeds past the body column, so the
+   content reads as continuing off both edges. Built inline by the gallery
+   renderer, so it appears wherever the project authored it. */
+.gallery__strip { margin: 40px 0 8px; }
+
+.gallery__strip-label {
+  margin: 0 0 16px;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: 400;
+}
+
+.gallery__strip-rail {
+  display: flex;
+  gap: 0;                      /* seamless: see note above */
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Bleed past the body column's gutter to both viewport edges. */
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+}
+.gallery__strip-rail::-webkit-scrollbar { display: none; }
+.gallery__strip-rail:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+.gallery__strip .gallery__strip-rail img {
+  display: block;
+  flex: none;
+  height: 300px;
+  width: auto;                 /* frames are sized by HEIGHT, not column width */
+  border-radius: 0;            /* seamless: see note above */
+}
+
+@media (min-width: 900px) {
+  .gallery__strip .gallery__strip-rail img { height: 420px; }
+}
+
+/* Deck variant: separate pages instead of a continuous image. Gets its own
+   gap and radius, and runs taller because these are portrait pages carrying
+   real type - at the seamless variant's height they read as thumbnails. */
+.gallery__strip-rail--deck { gap: 14px; }
+.gallery__strip .gallery__strip-rail--deck img {
+  height: 380px;
+  border-radius: 4px;
+  box-shadow: 0 2px 14px rgba(37, 41, 38, .14);
+}
+
+@media (min-width: 900px) {
+  .gallery__strip .gallery__strip-rail--deck img { height: 520px; }
+}
+
+/* ---------- Downloadable artefact ---------- */
+.gallery__doc {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: start;
+  margin-top: 8px;
+  padding: 16px 22px;
+  min-height: 44px;          /* the tap-target floor the nav also holds */
+  justify-content: center;
+  border: 1px solid rgba(37, 41, 38, .22);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.gallery__doc:hover {
+  border-color: var(--ink);
+  background: rgba(37, 41, 38, .04);
+}
+.gallery__doc:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.gallery__doc-label {
+  font-family: var(--font-gothic);
+  font-size: 14px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.gallery__doc-meta {
+  font-family: var(--font-gothic);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* ---------- Portfolio gallery: detail dialog ---------- */
+.gallery__detail {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--newsprint);
+  overflow: hidden; /* the SCROLL element is .gallery__detail-scroll, not this */
+}
+.gallery__detail[hidden] { display: none; }
+
+.gallery__detail-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery__close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 210;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--newsprint);
+  cursor: pointer;
+}
+.gallery__close svg { width: 16px; height: 16px; }
+.gallery__close:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.gallery__detail-hero {
+  position: relative;
+  width: 100%;
+  height: 62vh;
+  min-height: 320px;
+  max-height: 640px;
+  overflow: hidden;
+  border-radius: 0; /* FLIP animates this down from the card's radius */
+  background: var(--ink);
+}
+
+.gallery__detail-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery__detail-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 24px var(--gutter) 28px;
+  background: linear-gradient(to top, rgba(37, 41, 38, .85), rgba(37, 41, 38, 0) 70%);
+}
+
+.gallery__detail-title {
+  margin: 0 0 6px;
+  font-family: var(--font-gothic);
+  font-size: clamp(28px, 6vw, 48px);
+  line-height: 1;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--newsprint);
+  font-weight: 400;
+}
+
+.gallery__detail-category {
+  margin: 0;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(246, 245, 237, .72);
+}
+
+.gallery__detail-body {
+  /* Wider than a reading column: this holds 16:9 campaign boards with real
+     type on them, and at 720px their captions and body copy are illegible.
+     The description below is re-narrowed to a comfortable measure. */
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px var(--gutter) 96px;
+  /* Fades in slightly after the hero FLIP begins, and back out before the
+     card collapses on close - driven in JS by toggling .is-visible, not by
+     the dialog's own open/close state, so the two can be offset in time. */
+  opacity: 0;
+  transition: opacity 220ms var(--ease);
+}
+.gallery__detail-body.is-visible { opacity: 1; }
+
+/* Prose stays at a readable measure even though its container is wide. */
+.gallery__detail-description { max-width: 660px; }
+
+.gallery__detail-description {
+  margin: 0 0 32px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.gallery__detail-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.gallery__detail-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Divides a case study into named sections (parent brand, motion, sub-brand)
+   so a long gallery reads as a structured story rather than a pile. */
+.gallery__detail-heading {
+  margin: 40px 0 0;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: 400;
+}
+.gallery__detail-heading:first-child { margin-top: 0; }
+
+/* Embedded motion. aspect-ratio holds the 16:9 box before the iframe has
+   loaded anything, so the gallery does not reflow when it arrives. */
+.gallery__detail-video { margin: 0; }
+.gallery__detail-video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ink);
+}
+.gallery__detail-video figcaption,
+.gallery__detail-clip figcaption {
+  margin-top: 10px;
+  font-family: var(--font-gothic);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* ---------- Self-hosted silent loops ----------
+   Deliberately NOT GIFs. The crop is done here rather than in the encode, so
+   reframing is a one-line change instead of a re-encode - the clips ship as
+   16:9 and object-fit throws away whatever the frame does not need. Clips
+   destined for the tighter crops are encoded at 720p rather than 540p to pay
+   for the pixels this discards. */
+.gallery__detail-clip { margin: 0; }
+
+.gallery__detail-clip video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: var(--ink);   /* no white flash before the poster paints */
+  object-fit: cover;
+}
+
+.gallery__detail-clip--wide   video { aspect-ratio: 16 / 9; }
+.gallery__detail-clip--square video { aspect-ratio: 1 / 1; }
+.gallery__detail-clip--tall   video { aspect-ratio: 3 / 4; }
+
+/* Two entries abreast. Stacked until there is genuinely room - a 3:4 clip in
+   half a phone screen is a postage stamp. align-items:start lets a tall and a
+   square item keep their own heights rather than one being stretched out of
+   its aspect ratio; the uneven baseline is the intended editorial look. */
+.gallery__detail-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 700px) {
+  .gallery__detail-row {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  /* A set of three (product family, colourway run) rather than a pair. */
+  .gallery__detail-row--3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Credits ---------- */
+.gallery__credits { margin-top: 8px; }
+
+.gallery__credits-list {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 32px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+@media (min-width: 700px) {
+  .gallery__credits-list { grid-template-columns: 1fr 1fr; }
+}
+
+.gallery__credits-note {
+  margin: 20px 0 0;
+  font-family: var(--font-gothic);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+@media (min-width: 900px) {
+  .gallery__detail-overlay { padding: 32px var(--gutter) 40px; }
+  .gallery__detail-body { padding: 56px var(--gutter) 120px; }
+}
+
+/* ---------- Work - a block pasted onto the page ------------------------------
+   The newsprint continues unbroken from the hero; there is no rule between
+   them. The section break is a physical object instead: one heavy slab of
+   linen inside a printed ink frame, cut slightly crooked and set down askew,
+   with the poster headline superimposed across its top edge.
+   ------------------------------------------------------------------------- */
+.work {
+  position: relative;
+  padding: 56px var(--gutter) 88px;
+}
+
+.work__title {
+  position: relative;
+  z-index: 20;
+  margin: 0 0 20px;
+}
+
+/* Both lines now sit on plain newsprint - the ink slab they used to cross was
+   removed when the card rail took its place. */
+.work__title-a { color: var(--ink); }
+.work__title-b { color: var(--ink); }
+
+@media (min-width: 900px) {
+  .work { padding: 96px var(--gutter) 128px; }
+
+  /* Headline and marginalia share one grid cell so the note sits out in the
+     margin beside the headline rather than below it. The rail auto-places into
+     the next row underneath them. */
+  .work {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .work__title { grid-area: 1 / 1; }
+
+  .work__title {
+    align-self: start;
+    justify-self: start;
+    max-width: 64%;
+    margin: 0;
+    transform: rotate(-1.1deg);
+    transform-origin: left center;
+  }
+
+  /* Coral was originally forced here because line two crossed the slab's
+     tilted top edge and had to hold up on both surfaces. The slab is gone, so
+     this is now a plain accent choice: it splits the headline across two inks
+     and picks up the coral in the hero. It clears the system's bar for display
+     type at this size (2.42:1 on newsprint at 100px+); ink would read far
+     harder (13.75:1) if it ever looks weak.
+
+     The mix-blend-mode:normal override that used to sit here is gone with the
+     slab: the acid echo overprints on newsprint the way it does everywhere
+     else. It was only ever normal because acid multiplied into ink goes black. */
+  .work__title-b { color: var(--coral); }
+}
+
+/* ---------- Sections ---------- */
+.section { padding: 72px var(--gutter) 88px; }
+
+@media (min-width: 900px) {
+  .section { padding: 96px var(--gutter) 112px; }
+}
+
+@media (min-width: 900px) {
+}
+
+/* Misregistration: a ghost of the word in the second ink, multiplied.
+   Once per page. Never on body copy. */
+.misreg {
+  position: relative;
+  display: inline-block;
+  color: var(--coral);
+}
+.misreg::after {
+  content: attr(data-ghost);
+  position: absolute;
+  inset: 0;
+  color: var(--acid);
+  mix-blend-mode: multiply;
+  transform: translate(3px, 2px);
+  pointer-events: none;
+  transition: transform var(--slow) var(--ease);
+}
+
+
+/* ---------- Shout band ----------
+   Full-bleed coral interruption between the work and studio sections. Three
+   rows of the same phrase, drifting right at three different speeds as the
+   band crosses the viewport (site.js section 5 binds the motion).
+
+   The static translateX below is what the band looks like before any JS runs,
+   if the Motion CDN is unreachable, or under reduced motion - composed and
+   deliberately off-centre, never a broken-looking flush-left stack. */
+.shout {
+  position: relative;
+  overflow: hidden;              /* the type is meant to run off both edges */
+  background: var(--coral);
+  padding: 56px 0;               /* no side gutter - bleeding is the point */
+}
+
+.shout__rail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shout__row {
+  display: flex;
+  gap: 28px;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+}
+.shout__row[data-shout="0"] { transform: translateX(-460px); }
+.shout__row[data-shout="1"] { transform: translateX(-300px); }
+.shout__row[data-shout="2"] { transform: translateX(-240px); }
+
+.shout__word {
+  font-family: var(--font-gothic);
+  font-size: clamp(44px, 8vw, 88px);
+  line-height: .92;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+/* Alternating solid/outline is the effect - without it this is just a marquee. */
+.shout__word--out {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--paper);
+}
+
+.shout__word--hit { color: #e1ff19; }
+
+@media (min-width: 900px) {
+  .shout { padding: 72px 0; }
+  .shout__row { gap: 36px; }
+}
+
+/* ---------- Studio ---------- */
+.studio {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
+/* Stone texture over the ink, not instead of it - the section keeps its own
+   colour and this only breaks up the flatness. Absolutely positioned, so it
+   sits outside the grid flow and doesn't become a third column. */
+.studio__texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* The one dial worth touching. At .10 the section keeps the colour it had
+     before the video existed. If the drift ever reads as a still image, the
+     cause is this number, not the clip: at 10% over ink, a frame-to-frame
+     change of ~15 brightness levels composites down to ~1.5, under the eye's
+     noticeable-difference threshold. Raise toward .16 to trade a slightly
+     lighter section for motion you can actually see. */
+  opacity: var(--texture-opacity, .10);
+  pointer-events: none;
+}
+
+.studio__tex {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Photo and copy ride above the texture. */
+.studio__slides,
+.studio__body { position: relative; z-index: 1; }
+
+@media (min-width: 900px) {
+  .studio { grid-template-columns: 5fr 7fr; }
+}
+
+/* Fixed box for the rapid-cut sequence. Every frame inside is absolutely
+   positioned, so the container contributes no height of its own - which means
+   it needs a definite height from somewhere or it collapses:
+
+     desktop  .studio is align-items:stretch, so the grid row (sized by the
+              copy beside it) gives the height. aspect-ratio is switched off
+              so the box matches the column exactly, as the old photo did.
+     mobile   single column, nothing to stretch against, so aspect-ratio
+              supplies the height. 3:4 matches the sources, capped at 60vh.
+
+   Either way the height is settled before any image loads, so swapping frames
+   can never move the page. */
+.studio__slides {
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  max-height: 60vh;
+}
+
+@media (min-width: 900px) {
+  .studio__slides {
+    aspect-ratio: auto;
+    max-height: none;
+  }
+}
+
+.studio__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  /* Hard cut. Any transition here - including the blanket 150ms the
+     reduced-motion block applies - would turn this into a crossfade. */
+  transition: none !important;
+}
+
+.studio__slide.is-on { opacity: 1; }
+
+.studio__body { padding: 72px var(--gutter) 80px; }
+
+@media (min-width: 900px) {
+  .studio__body { padding: 112px 64px; }
+}
+
+.studio__title {
+  margin: 0 0 40px;
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: .98;
+  color: var(--paper);
+  max-width: 620px;
+}
+
+@media (min-width: 900px) {
+  .studio__title { margin-bottom: 56px; }
+}
+
+.reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 620px;
+}
+
+@media (min-width: 900px) { .reasons { gap: 40px; } }
+
+.reason {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  padding-top: 24px;
+  position: relative;
+}
+
+@media (min-width: 900px) {
+  .reason { grid-template-columns: 64px 1fr; gap: 24px; }
+}
+
+/* The rule draws itself in rather than simply appearing. */
+.reason::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--rule-ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--slow) var(--ease);
+}
+
+.reason__num {
+  font-family: var(--font-gothic);
+  font-size: 40px;
+  line-height: .9;
+  color: var(--chartreuse);
+}
+
+@media (min-width: 900px) { .reason__num { font-size: 48px; } }
+
+.reason__title {
+  margin: 0 0 10px;
+  font-family: var(--font-gothic);
+  font-size: 24px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--paper);
+}
+
+@media (min-width: 900px) { .reason__title { font-size: 30px; } }
+
+.reason__body {
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(246, 245, 237, .7);
+}
+
+.studio .script {
+  color: var(--chartreuse);
+  opacity: .95;
+  font-size: 18px;
+  transform: rotate(-3deg);
+  margin-top: 40px;
+}
+
+@media (min-width: 900px) { .studio .script { margin-top: 48px; } }
+
+/* ---------- Contact ----------
+   The headline is a sprayed PNG, and it stays where the old <h2> was: left
+   column, between the eyebrow and the lede. The section's 7fr/5fr shape is
+   unchanged and the form is untouched on the right.
+
+   Everything below derives from where the ink actually sits in that file,
+   measured rather than eyeballed:
+
+     the artwork occupies x 3.5%-85.2%, y 6.2%-92.5% of the canvas
+
+   Measured on SOLID pixels per row and column, not on a share of the peak.
+   That distinction matters: the letterforms alone sit at y 21%-80%, and sizing
+   the slot to them cropped the phone illustration, which is narrow enough to
+   barely register in column density but runs to y 92.5%. The paragraph then
+   collided with it. If this art is ever swapped, re-measure the SOLID extent,
+   not the type.
+
+   Canvas is 3:2, hence the 0.667 in the height factors. */
+.contact {
+  /* The one dial. Art reads at 0.817 x this value; keep it under ~950px so the
+     artwork still terminates inside the copy column at desktop widths. */
+  --spray-w: clamp(380px, 62vw, 950px);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .contact { grid-template-columns: 7fr 5fr; gap: 96px; }
+
+  /* The left column is the taller of the two - the sprayed headline makes it
+     so - and with align-items:start the form sat pinned to the top against a
+     much longer neighbour, which read as misaligned. Centring only the form
+     leaves the copy anchored where it belongs and balances the two optically.
+     Scoped to the two-column breakpoint; below it each item is its own row and
+     centring would mean nothing. */
+  #form-slot { align-self: center; }
+}
+
+/* Takes the old headline's place in the flow, margins included, so the lede
+   and note sit below the letterforms exactly as they sat below the h2.
+   The height is the TYPE BAND only (59.4% of image height), not the whole
+   image - the empty bands above and below hang outside the slot and drift over
+   the eyebrow and lede as haze. That overlap is the point. */
+/* Height is the artwork's TRUE extent (86.3% of image height), so the lede
+   clears the phone as well as the letterforms. */
+.contact__spray-slot {
+  position: relative;
+  height: calc(var(--spray-w) * 0.575);
+  margin: 24px 0 28px;
+}
+
+.contact__spray {
+  position: absolute;
+  /* -1 is correct HERE, and the distinction is worth understanding because the
+     opposite rule holds elsewhere in this file.
+
+     A negative z-index child paints above its stacking context's own
+     background but below that context's in-flow content. Its context here is
+     .contact > div, which has NO background, so the spray still shows against
+     the section's newsprint - while the eyebrow, lede and note, which are
+     ordinary non-positioned blocks, now paint over it.
+
+     At z-index 0 they did not: within a stacking context a POSITIONED z-index:0
+     element paints above non-positioned in-flow blocks, so the overspray sat on
+     top of the paragraph.
+
+     Do not copy this onto a section-level element. .hero/.work/.section each
+     paint an opaque textured background, and a -1 child there disappears behind
+     it - that has already cost time three times (the nav, .gallery, the
+     footer). The rule is about whether the parent paints, not about the value. */
+  z-index: -1;
+  /* Cancels the image's own empty left margin (3.5%) and then pulls a further
+     gutter + 30px, so the artwork's left edge always lands 30px off the
+     viewport regardless of --spray-w - it bleeds by a fixed amount rather than
+     one that drifts with the scale. */
+  left: calc(var(--spray-w) * -0.035 - var(--gutter) - 30px);
+  top:  calc(var(--spray-w) * -0.041);          /* its empty top band */
+  width: var(--spray-w);
+  max-width: none;             /* must escape any inherited max-width: 100% */
+  height: auto;
+  pointer-events: none;        /* its haze reaches across the form */
+  user-select: none;
+}
+
+/* The rotating seal.
+
+   Placed proportionally to the ARTWORK, not to the column, so it keeps its
+   relationship to the letterforms at every --spray-w. Taken off the reference
+   comp: the badge is ~22% of the type's width, its centre sits a hair left of
+   the type's left edge, and level with the type's vertical centre. Converted
+   into fractions of --spray-w via the measured type box (x 26.5%-71.0%,
+   y 21.1%-80.5%) and the spray's own offsets, which is why the numbers below
+   look arbitrary - they are not, they are that comp.
+
+   z-index 3 puts it above the copy in this column. It cannot cover the form,
+   which lives in the sibling column at z-index 1 and therefore paints later -
+   but it sits far left of the form anyway. */
+.contact__badge {
+  position: absolute;
+  z-index: 3;
+  /* left/top are the badge's CENTRE, not its corner - translate takes it back
+     by half its own size. That deliberately decouples position from scale:
+     --badge-scale can change on its own without having to re-derive the two
+     offsets, which is otherwise easy to forget and lands the badge off-centre.
+     (translate composes with the `rotate` below rather than fighting it; the
+     spin still turns about the badge's own middle.) */
+  --badge-scale: 0.1212;        /* fraction of --spray-w; 20% up from 0.101 */
+  left: calc(var(--spray-w) * 0.222 - var(--gutter) - 30px);
+  top:  calc(var(--spray-w) * 0.298);
+  translate: -50% -50%;
+  width: calc(var(--spray-w) * var(--badge-scale));
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  /* Rotates about its own centre - "in place". The separate `rotate` property,
+     not transform, so it never fights anything that wants transform later. */
+  animation: badge-spin 18s linear infinite;
+}
+
+@keyframes badge-spin {
+  from { rotate: 0deg; }
+  to   { rotate: 360deg; }
+}
+
+/* Copy and form ride above the spray. */
+.contact > div { position: relative; z-index: 1; }
+
+
+.contact__lede {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--slate);
+  max-width: 560px;
+}
+
+@media (min-width: 900px) { .contact__lede { font-size: 20px; } }
+
+.contact__note { margin-top: 40px; }
+
+/* ---------- Form ------------------------------------------------------------
+   No surface of its own - the form sits directly on the section's newsprint so
+   it reads as part of the contact section rather than a panel dropped into it.
+   Structure comes from the tracked-caps labels and the underline-only fields,
+   which is the parent Hum system unchanged; pulp's contribution here is the
+   label voice and the squared acid CTA, not new chrome.
+   ------------------------------------------------------------------------- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (min-width: 900px) { .form { gap: 40px; } }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field__label {
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--slate);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.field__label::before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  background: var(--chartreuse);
+  flex: none;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 44px;
+  font-family: var(--font-text);
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(37, 41, 38, .25);
+  border-radius: 0;
+  padding: 10px 0;
+  outline-offset: 4px;
+  transition: border-color var(--fast) var(--ease);
+}
+
+.field textarea { resize: vertical; min-height: 96px; }
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #918b78;
+  font-style: italic;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-bottom-width: 2px;
+  border-bottom-color: var(--ink);
+}
+
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23252926' d='M0 0h10L5 6z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+}
+
+.form__status {
+  margin: 0;
+  min-height: 20px;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* Netlify honeypot */
+.hp { position: absolute; left: -9999px; opacity: 0; }
+
+/* Sent state - replaces the form in place. */
+.form__sent {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.1;
+  color: var(--ink);
+}
+.form__sent p {
+  font-family: var(--font-text);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--slate);
+  margin-top: 20px;
+}
+
+/* ---------- Footer ---------- */
+/* ---------- Footer (reveal) ----------
+   Pinned to the viewport bottom the whole time and sitting BEHIND the page
+   (z-index: -1). Scrolling slides the content up and uncovers it. This is the
+   entire mechanic - pure CSS, no JS, and no reduced-motion guard needed because
+   sticky positioning is not animation.
+
+   Two load-bearing dependencies, both in the occlusion block below:
+   1. Everything scrolling over this must be OPAQUE. .hero/.work/.section were
+      transparent, so they now paint the body texture themselves.
+   2. Those sections must sit ABOVE the footer. Note this is done by lifting the
+      content to z-index:1 rather than by pushing the footer to z-index:-1 as the
+      reference does - negative z-index put the footer behind the *body*
+      background here (html is transparent, so body carries the page background)
+      and it never revealed at all. */
+.footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 0;
+  background: var(--ink);
+  color: rgba(246, 245, 237, .72);
+  min-height: clamp(420px, 62vh, 620px);
+  display: flex;
+  align-items: flex-end;
+  padding: 64px var(--gutter) 40px;
+  font-family: var(--font-gothic);
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.footer__inner { width: 100%; }
+
+/* The payoff of the reveal, and the last line of the page's argument:
+   NOBODY CARES -> WHAT IF THEY DID? -> MAKE PEOPLE CARE. */
+.footer__statement {
+  font-family: var(--font-gothic);
+  font-size: clamp(52px, 12vw, 132px);
+  line-height: .9;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--paper);
+  margin: 0 0 28px;
+}
+
+.footer__mail {
+  display: inline-block;
+  font-family: var(--font-gothic);
+  font-size: clamp(20px, 3.2vw, 34px);
+  letter-spacing: .04em;
+  text-transform: none;
+  color: var(--acid);
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  margin-bottom: 48px;
+  transition: border-color var(--base) var(--ease);
+}
+.footer__mail:hover { border-bottom-color: var(--acid); opacity: 1; }
+
+.footer__cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--rule-ink);
+}
+
+.footer__h {
+  font-size: 11px;
+  letter-spacing: .22em;
+  color: rgba(246, 245, 237, .45);
+  margin: 0 0 14px;
+  font-weight: 400;
+}
+
+.footer__list { list-style: none; margin: 0; padding: 0; }
+.footer__list li { margin-bottom: 2px; }
+/* Matches the 44px minimum the nav links hit with the same technique - padding,
+   not height, so the type keeps its rhythm. (An earlier 3px here measured 25px.) */
+.footer__list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 4px 0;
+}
+.footer__list a:hover { color: var(--paper); opacity: 1; }
+
+.footer__credits { margin: 28px 0 0; font-size: 11px; }
+.footer__c { font-family: var(--font-text); letter-spacing: 0; }
+
+@media (min-width: 700px) {
+  .footer { padding: 80px var(--gutter) 48px; }
+  .footer__cols { gap: 40px 80px; }
+}
+
+/* ---------- Footer occlusion ----------
+   These three sections declared no background, so the body texture showed
+   through them. With a z-index:-1 footer behind the page that also meant the
+   dark footer showed through, for the whole scroll rather than just at the end.
+
+   Declaring the same texture here makes them opaque. It is visually identical
+   to before: background-attachment:fixed anchors the image to the viewport, not
+   to each element, so all of them paint exactly the pixels the body did. */
+.hero,
+.work,
+.section {
+  background: var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
+}
+
+/* Every content section rides above the pinned footer. .shout and .studio carry
+   their own opaque colours already and only need the stacking order.
+
+   ADD ANY NEW TOP-LEVEL SECTION HERE. The footer is position:sticky with
+   z-index:0, so a section left at position:static paints BELOW it - the footer
+   and its statement text render straight over that section's content. This has
+   already bitten twice (the nav, then .gallery); it is not obvious from looking
+   at the new section's own CSS, because nothing there is wrong.
+
+   .gallery is not listed any more - it now lives inside .work and rides on
+   .work's z-index. If it is ever lifted back out to top level, it has to come
+   back here. Note that .gallery__detail is deliberately NOT nested in .work: it
+   is a fixed, full-screen overlay, and .work's stacking context would trap it
+   below the nav and footer. */
+.hero,
+.work,
+.shout,
+.studio,
+.section {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================================
+   Scroll choreography
+   One-shot only. Nothing loops, nothing breathes - a press registering,
+   not an animation. Every rule here is inert under reduced motion.
+   ========================================================================= */
+
+/* Stagger utilities - the only knob the markup sets. */
+.d-1 { --d: 80ms; }
+.d-2 { --d: 160ms; }
+.d-3 { --d: 240ms; }
+
+/* Rise: opacity + <=8px translateY, staggered by --d. */
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--slow) var(--enter), transform var(--slow) var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* Reason rules draw, contents rise. */
+.reason.is-in::before { transform: scaleX(1); }
+
+/* Registration snap: the ghost settles from a wide miss to a 3px offset. */
+.misreg::after { transform: translate(11px, 8px); }
+.misreg.is-in::after { transform: translate(3px, 2px); }
+
+/* Hero mark lands with the same one-shot registration snap - but on a CSS
+   animation, not an observer. It is above the fold, so its final state must
+   not depend on JS running (or on a compositor flush that may never come).
+   The resting state lives on the element; only the entrance is in keyframes,
+   so `animation: none` under reduced motion lands on a fully-painted hero. */
+.hero__mark { animation: register-in 420ms var(--ease) both; }
+
+@keyframes register-in {
+  from { opacity: 0; transform: translate(6px, 4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Print doesn't move. Under reduced motion nothing does - which now matters
+   more than it used to: the hero's neon flicker (.hero__layer--neon) is the
+   one genuinely ambient, infinitely looping animation on this site, and the
+   blanket `animation: none` below is what switches it off. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 150ms !important;
+    transition-delay: 0ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .reason::before { transform: scaleX(1); }
+  .misreg::after { transform: translate(3px, 2px); }
+  .shout__row[data-shout="0"] { transform: translateX(-460px); }
+  .shout__row[data-shout="1"] { transform: translateX(-300px); }
+  .shout__row[data-shout="2"] { transform: translateX(-240px); }
+}
+
+/* No-JS: never leave content hidden behind an observer that never fires. */
+.no-js .reveal { opacity: 1; transform: none; }
+.no-js .reason::before { transform: scaleX(1); }
+.no-js .misreg::after { transform: translate(3px, 2px); }

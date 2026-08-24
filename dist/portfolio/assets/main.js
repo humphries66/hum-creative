@@ -1,6 +1,6 @@
 // Media slots: until a real file exists in assets/images/work/, show the
 // labeled placeholder instead of a broken image. Drop the file in and the
-// slot fills itself on next load — no markup changes needed.
+// slot fills itself on next load - no markup changes needed.
 document.querySelectorAll(".asset").forEach((figure) => {
   const img = figure.querySelector("img");
   if (!img) return;
@@ -17,7 +17,7 @@ document.querySelectorAll(".asset").forEach((figure) => {
 });
 
 // Lightbox. Thumbnails are cropped by object-fit: cover, so clicking one shows
-// the whole image. Covers wrapped in a PDF link are skipped — they already open
+// the whole image. Covers wrapped in a PDF link are skipped - they already open
 // the document.
 (() => {
   const box = document.getElementById("lightbox");

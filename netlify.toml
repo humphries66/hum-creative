@@ -1,21 +1,32 @@
+# The site is hand-authored static HTML in /dist. There is no build step -
+# Netlify publishes the directory verbatim. (It previously ran `vite build`
+# against a React app; see git history on origin/main before the pulp rebuild.)
 [build]
-  command = "npm run build"
   publish = "dist"
+  # MUST stay explicitly empty. A [build] block with no `command` key falls back
+  # to the build command configured in the Netlify UI - which is still
+  # `npm run build`. That would run `vite build`, whose default outDir is also
+  # `dist`, and overwrite this hand-authored site with the old React app.
+  # Leave this as "" unless package.json and vite.config.js are deleted.
+  command = ""
 
-# The graphic-design portfolio is a standalone static page in public/portfolio/,
-# which Vite copies verbatim into dist/ at build time.
-#
-# This rule MUST stay above the SPA catch-all below. Netlify matches redirects in
-# order, so without it a request for the bare /portfolio path falls through to
-# /index.html and renders the React app instead of the portfolio. Deeper paths
-# (/portfolio/assets/...) are real files, and existing files already take
-# precedence over non-forced rules, so they need no rule of their own.
+# The graphic-design portfolio is a standalone static page at dist/portfolio/.
+# Netlify serves dist/portfolio/index.html for the bare /portfolio path on its
+# own, but the rule is kept explicit so the behaviour survives future edits.
 [[redirects]]
   from = "/portfolio"
   to = "/portfolio/index.html"
   status = 200
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Fonts are same-origin, but the preload hints in index.html use `crossorigin`,
+# so they must be served with a matching CORS header or the preload is wasted.
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

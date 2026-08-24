@@ -80,7 +80,8 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# NOTE: /dist is this site's hand-authored source, not build output — it is what
+# Netlify publishes, so it must stay tracked. Do not re-add `dist` here.
 
 # Gatsby files
 .cache/
@@ -137,3 +138,32 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Orphaned worktree copies from a previous machine. Their .git files point at a
+# home directory that no longer exists, which makes git abort while scanning.
+.claude/worktrees/
+
+# ---------------------------------------------------------------------------
+# Source material and working files. These are the originals the site is
+# derived FROM (raw photography, PSD/AI exports, decks, other projects), not
+# anything Netlify serves. Roughly 260MB combined, so keeping them out matters.
+# The published site lives in /dist and stays tracked.
+# ---------------------------------------------------------------------------
+.DS_Store
+**/.DS_Store
+/SCRATCH/
+/scratch/
+/1x/
+/LOGOS/
+/Sample Proposal/
+/Hum Creative Co. Design System/
+/uphome-clone/
+/ESTACA/
+/LETSTALK.png
+/letstalk2.png
+/jared-about-me.md
+/jared-voice-profile.md
+/leadership-slop.md
+
+# Machine-specific: absolute node paths and other projects on this Mac.
+/.claude/
