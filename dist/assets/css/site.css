@@ -1271,6 +1271,11 @@ p { margin: 0; text-wrap: pretty; }
   .studio__body { padding: 112px 64px; }
 }
 
+/* The section's chartreuse accent used to live on the "we answer our own
+   email" script line below the reasons. That line is gone, so the green moves
+   onto the one word it was always about. 8.73:1 on the ink ground. */
+.studio__title em { color: var(--chartreuse); }
+
 .studio__title {
   margin: 0 0 40px;
   font-family: var(--font-display);
@@ -1346,16 +1351,6 @@ p { margin: 0; text-wrap: pretty; }
   line-height: 1.55;
   color: rgba(246, 245, 237, .7);
 }
-
-.studio .script {
-  color: var(--chartreuse);
-  opacity: .95;
-  font-size: 18px;
-  transform: rotate(-3deg);
-  margin-top: 40px;
-}
-
-@media (min-width: 900px) { .studio .script { margin-top: 48px; } }
 
 /* ---------- Contact ----------
    The headline is a sprayed PNG, and it stays where the old <h2> was: left
