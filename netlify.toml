@@ -1,6 +1,7 @@
 # The site is hand-authored static HTML in /dist. There is no build step -
 # Netlify publishes the directory verbatim. (It previously ran `vite build`
 # against a React app; see git history on origin/main before the pulp rebuild.)
+# Force redeploy: 2026-08-25 13:35
 [build]
   publish = "dist"
   # MUST stay explicitly empty. A [build] block with no `command` key falls back
