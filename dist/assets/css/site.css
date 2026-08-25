@@ -1411,7 +1411,8 @@ p { margin: 0; text-wrap: pretty; }
   }
 
   .contact__spray {
-    left: calc(var(--spray-w) * -0.035 - var(--gutter));
+    left: 50%;
+    translate: -50% 0;
   }
 }
 
