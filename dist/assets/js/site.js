@@ -525,6 +525,7 @@
       '/assets/img/hero-raccoon.png':                    [2175, 1372],
       '/assets/img/hero-tagline.png':                    [2175, 1372],
       '/assets/img/hum-bg-texture.jpg':                  [1920, 1080],
+      '/assets/img/hum-link-preview.png':                [1200, 630],
       '/assets/img/hum-messy-header.png':                [1877, 1372],
       '/assets/img/letstalk.png':                        [1500, 1000],
       '/assets/img/nowbooking.png':                      [1064, 1077],
