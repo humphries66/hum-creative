@@ -1,14 +1,20 @@
 # The site is hand-authored static HTML in /dist. There is no build step -
 # Netlify publishes the directory verbatim. (It previously ran `vite build`
-# against a React app; see git history on origin/main before the pulp rebuild.)
+# against a React app; that app is removed as of the `react-app-final` tag.)
 # Force redeploy: 2026-08-25 13:35
 [build]
   publish = "dist"
-  # MUST stay explicitly empty. A [build] block with no `command` key falls back
-  # to the build command configured in the Netlify UI - which is still
-  # `npm run build`. That would run `vite build`, whose default outDir is also
-  # `dist`, and overwrite this hand-authored site with the old React app.
-  # Leave this as "" unless package.json and vite.config.js are deleted.
+  # Stays explicitly empty. A [build] block with no `command` key falls back to
+  # the build command configured in the Netlify UI, which may still be
+  # `npm run build`; this guarantees nothing runs at all.
+  #
+  # This line used to be the ONLY thing standing between a stray `npm run build`
+  # and the live site: package.json ran `vite build`, vite.config.js set no
+  # outDir, and Vite's default outDir is `dist` - the directory published below.
+  # A build would have silently overwritten the hand-authored site with the old
+  # React app. Those files are gone now (tag `react-app-final`), so the worst a
+  # stray build command can do is fail. Keep this empty anyway: a loud failure
+  # is still a broken deploy, and there is no build to run.
   command = ""
 
 # The graphic-design portfolio is a standalone static page at dist/portfolio/.

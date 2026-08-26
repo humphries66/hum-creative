@@ -11,10 +11,14 @@ static HTML in `/dist`. The graphic-design portfolio lives alongside it at
 Netlify publishes `dist/` verbatim. **There is no build step.**
 
 `netlify.toml` sets `command = ""` deliberately. A `[build]` block with no
-`command` key falls back to the build command still configured in the Netlify
-UI (`npm run build`) - that would run `vite build`, whose default `outDir` is
-also `dist`, and overwrite the hand-authored site with the old React app.
-Do not remove that line while `package.json` and `vite.config.js` still exist.
+`command` key falls back to the build command configured in the Netlify UI,
+which may still be `npm run build`; the empty string guarantees nothing runs.
+
+This used to be load-bearing in a much scarier way: `package.json` ran
+`vite build`, `vite.config.js` set no `outDir`, and Vite's default `outDir` is
+`dist` - so a build silently replaced the hand-authored site with the retired
+React app. Those files have been removed (tag `react-app-final`), so a stray
+build command now fails instead of destroying the site. Keep the line anyway.
 
 Push to `main` → auto-deploy in ~2 minutes.
 
@@ -54,11 +58,22 @@ dist/
     img/                  hero artwork, newsprint texture, portrait, logo
   portfolio/              the graphic-design portfolio, unchanged
 netlify.toml              publish dist, no build
+devserver.py              local preview of dist/ on :5181, no-store headers
 ```
 
-### Still in the repo but no longer deployed
+### The retired React/Vite app - removed
 
-`src/`, `index.html` (root), `package.json`, `package-lock.json`,
-`vite.config.js` - the retired React/Vite app, including the old `FullyBooked`
-landing and the `?archive=true` portfolio. Nothing serves these now. They are
-safe to delete; the full history is on `origin/main` before the pulp rebuild.
+`src/`, `public/`, `index.html` (root), `package.json`, `package-lock.json` and
+`vite.config.js` held the pre-pulp React site, including the old `FullyBooked`
+landing and the `?archive=true` portfolio. They were deleted once it was
+confirmed nothing in `dist/` referenced them.
+
+They are recoverable from the annotated tag `react-app-final`:
+
+```
+git checkout react-app-final -- src public index.html package.json package-lock.json vite.config.js
+```
+
+Note there is no `npm` in this project any more, and nothing needs one:
+`devserver.py` is plain Python (`python3 devserver.py`, serves `dist/` on
+:5181 with no-store headers) and Netlify publishes `dist/` verbatim.
