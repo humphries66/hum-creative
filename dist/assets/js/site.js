@@ -484,6 +484,131 @@
   var galleryRail = document.getElementById('gallery-rail');
 
   if (galleryRail) {
+    /* Intrinsic pixel dimensions of every image the detail body renders.
+
+       WHY THIS EXISTS. An <img> with no width/height attributes, styled
+       `width:100%; height:auto`, occupies ZERO HEIGHT until its file decodes.
+       The detail body renders up to 14 of them, so on open they all collapsed
+       on top of each other and then shoved each other down one by one as they
+       loaded - measured at 2188px of shift (567px -> 2755px), running right
+       through the 600ms open animation. That is what read as a "glitchy" or
+       stacking transition; the animation itself was never at fault.
+
+       Setting width/height here lets the browser reserve the correct box from
+       the ratio before a single byte arrives. It also makes loading="lazy"
+       harmless rather than a liability: a late image now drops into a box
+       that is already the right size.
+
+       A single CSS aspect-ratio cannot do this - these genuinely differ
+       (1800x1012, 1800x1350, 1400x787, 778x1100...), so one blanket ratio
+       would only trade a big shift for a smaller wrong one.
+
+       Enumerated from DISK, not by grepping this file for paths. Strip and
+       deck images are built at runtime with .map() -
+       ('/assets/img/work/x/frame-' + n + '.jpg') - so they appear in no
+       string literal and a grep-based map silently missed all 32 of them.
+
+       REGENERATE when artwork is added or re-exported. Paths missing from the
+       map fall back to the old behaviour, never to a wrong box:
+
+         find dist/assets/img -type f \( -name '*.jpg' -o -name '*.jpeg' \
+              -o -name '*.png' -o -name '*.webp' \) | sort | while read F; do
+           W=$(sips -g pixelWidth  "$F" | tail -1 | awk '{print $2}')
+           H=$(sips -g pixelHeight "$F" | tail -1 | awk '{print $2}')
+           echo "      '${F#dist}': [$W, $H],"
+         done
+    */
+    var IMG_DIMS = {
+      '/assets/img/hero-boring-must-die.png':            [2175, 1372],
+      '/assets/img/hero-creative-co.png':                [2175, 1372],
+      '/assets/img/hero-hum.png':                        [2175, 1372],
+      '/assets/img/hero-raccoon.png':                    [2175, 1372],
+      '/assets/img/hero-tagline.png':                    [2175, 1372],
+      '/assets/img/hum-bg-texture.jpg':                  [1920, 1080],
+      '/assets/img/hum-messy-header.png':                [1877, 1372],
+      '/assets/img/letstalk.png':                        [1500, 1000],
+      '/assets/img/nowbooking.png':                      [1064, 1077],
+      '/assets/img/storyghost.jpg':                      [778, 1100],
+      '/assets/img/studio/frame-01.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-02.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-03.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-04.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-05.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-06.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-07.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-08.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-09.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-10.jpg':                 [800, 1066],
+      '/assets/img/studio/frame-11.jpg':                 [800, 1066],
+      '/assets/img/work/decatur-city/board-runclub.jpg': [1800, 1012],
+      '/assets/img/work/decatur-city/board-serve.jpg':   [1800, 1350],
+      '/assets/img/work/decatur-city/cover.jpg':         [1400, 787],
+      '/assets/img/work/decatur-city/pf-apparel.jpg':    [1800, 1012],
+      '/assets/img/work/decatur-city/pf-badges.jpg':     [1800, 1012],
+      '/assets/img/work/decatur-city/pf-eventday.jpg':   [1800, 1012],
+      '/assets/img/work/decatur-city/pf-logo.jpg':       [1800, 1012],
+      '/assets/img/work/decatur-city/pf-variations.jpg': [1800, 1012],
+      '/assets/img/work/emmanuel/cover.jpg':             [1400, 787],
+      '/assets/img/work/emmanuel/poster-cello.jpg':      [640, 360],
+      '/assets/img/work/emmanuel/poster-dancer.jpg':     [640, 360],
+      '/assets/img/work/emmanuel/poster-decks.jpg':      [640, 360],
+      '/assets/img/work/emmanuel/poster-finale.jpg':     [640, 360],
+      '/assets/img/work/emmanuel/poster-open.jpg':       [640, 360],
+      '/assets/img/work/estaca/bottle-red.jpg':          [900, 900],
+      '/assets/img/work/estaca/bottle-salvaje.jpg':      [900, 900],
+      '/assets/img/work/estaca/bottle-trago.jpg':        [900, 900],
+      '/assets/img/work/estaca/cover.jpg':               [1400, 787],
+      '/assets/img/work/estaca/lifestyle.jpg':           [1920, 1080],
+      '/assets/img/work/estaca/pitch-cantina.jpg':       [1600, 900],
+      '/assets/img/work/estaca/pitch-dia.jpg':           [1600, 900],
+      '/assets/img/work/estaca/poster-bottles.jpg':      [640, 360],
+      '/assets/img/work/estaca/poster-film.jpg':         [640, 360],
+      '/assets/img/work/estaca/process-mesh.jpg':        [900, 506],
+      '/assets/img/work/estaca/process-render.jpg':      [900, 720],
+      '/assets/img/work/fridge-cig/board-1.jpg':         [1800, 1013],
+      '/assets/img/work/fridge-cig/board-2.jpg':         [1800, 1013],
+      '/assets/img/work/fridge-cig/board-3.jpg':         [1800, 1013],
+      '/assets/img/work/fridge-cig/board-4.jpg':         [1800, 1013],
+      '/assets/img/work/fridge-cig/cover.jpg':           [1200, 1200],
+      '/assets/img/work/fridge-cig/frame-1.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-10.jpg':        [900, 900],
+      '/assets/img/work/fridge-cig/frame-2.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-3.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-4.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-5.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-6.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-7.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-8.jpg':         [900, 900],
+      '/assets/img/work/fridge-cig/frame-9.jpg':         [900, 900],
+      '/assets/img/work/hall-of-fame/cover.jpg':         [1200, 900],
+      '/assets/img/work/hall-of-fame/deck-01.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-02.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-03.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-04.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-05.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-06.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-07.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-08.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-09.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-10.jpg':       [801, 1037],
+      '/assets/img/work/hall-of-fame/deck-11.jpg':       [801, 1037],
+      '/assets/img/work/secret-show/cover.jpg':          [1200, 670],
+      '/assets/img/work/secret-show/signage.jpg':        [1600, 1066],
+      '/assets/img/work/secret-show/social.jpg':         [1600, 900],
+      '/assets/img/work/secret-show/web.jpg':            [1600, 1066],
+      '/assets/img/work/secret-show/wordmark.jpg':       [1600, 900]
+    };
+
+    /* Applies the reserved box. No-op when the path is unknown, so a stale map
+       degrades to the old behaviour instead of inventing wrong proportions - a
+       wrong box would look worse than no box at all. */
+    function sizeImg(img, src) {
+      var d = IMG_DIMS[src];
+      if (!d) return;
+      img.width = d[0];
+      img.height = d[1];
+    }
+
     // Placeholder data - real projects replace this array later. Every
     // downstream piece (cards, dialog) renders purely from this shape.
     var PROJECTS = [
@@ -1122,6 +1247,7 @@
             im.alt = project.title + (deck ? ' deck page ' : ' frame ')
                      + (i + 1) + ' of ' + item.strip.images.length;
             im.loading = 'lazy';
+            sizeImg(im, src);         // reserve the box - see IMG_DIMS
             sr.appendChild(im);
           });
           sec.appendChild(sl);
@@ -1234,6 +1360,7 @@
         img.src = item.src;
         img.alt = item.alt || (project.title + ' additional project image');
         img.loading = 'lazy';
+        sizeImg(img, item.src);   // reserve the box - see IMG_DIMS
         return img;
       }
 
