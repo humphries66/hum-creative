@@ -24,6 +24,77 @@ Push to `main` → auto-deploy in ~2 minutes.
 
 ---
 
+## DNS - it is fine, do not "fix" it
+
+**humcreative.co is registered at Squarespace** (backend registrar Tucows /
+OpenSRS) and its DNS is served by Squarespace. Netlify hosts the site but does
+**not** hold the DNS zone.
+
+The delegation lists six nameservers in two naming styles:
+
+```
+dns1.p02.nsone.net  dns2.p02.nsone.net
+dns3.p02.nsone.net  dns4.p02.nsone.net
+ns01.squarespacedns.com  ns02.squarespacedns.com
+```
+
+**This looks wrong and is not.** Squarespace DNS runs on NS1 Connect, and
+Squarespace's own default nameserver set includes both `.nsone.net` and
+`.squarespacedns.com` hostnames. All six are Squarespace's. One provider, one
+zone.
+
+Recorded here because it fooled me once: `nsone.net` also appears in Netlify
+DNS (Netlify resells NS1 too), so it is easy to conclude the domain is split
+between two providers and start "consolidating" it. It is not split. Two commit
+messages from 2026-08-26 assert otherwise - they are wrong, and this section is
+the correction. Proof it is a single zone:
+
+- Every record type and subdomain returns byte-identical answers from both
+  nameserver sets.
+- All six report the **same SOA serial** (`1700590234`) and the same primary,
+  `dns1.p01.nsone.net`. Independently managed zones would not share a serial.
+
+### Live records - anything here will break something
+
+| record | value | if lost |
+|---|---|---|
+| apex `A` | `75.2.60.5` (Netlify) | site offline |
+| apex `MX` x5 | Google Workspace | **email stops** |
+| `www` `CNAME` | `humco.netlify.app` | www dead |
+| `mail` `MX` x2 | Mailgun | transactional mail dead |
+| `mail` `TXT` | `v=spf1 include:mailgun.org ~all` | Mailgun mail to spam |
+| `google._domainkey` | Google DKIM key | outbound signing breaks |
+| `_dmarc` | `v=DMARC1; p=none;` | policy lost |
+| `_domainconnect` | Squarespace | domain-connect breaks |
+
+Zone is **unsigned** (no DNSSEC). Domain carries `clientUpdateProhibited`, so
+any nameserver change needs unlocking at the registrar first. TTLs: MX and
+`www` 4h.
+
+### Auditing this zone
+
+Use explicit record types. **Never `ANY`** - these nameservers refuse `ANY`
+(RFC 8482), so an `ANY` sweep returns nothing and looks like a clean result
+while hiding every record.
+
+```bash
+for T in A AAAA MX TXT CNAME NS SOA CAA; do
+  echo "$T @nsone:  $(dig @dns1.p02.nsone.net    humcreative.co $T +short | sort | tr '\n' ' ')"
+  echo "$T @sqsp :  $(dig @ns01.squarespacedns.com humcreative.co $T +short | sort | tr '\n' ' ')"
+done
+```
+
+### Known gap, not yet addressed
+
+There is **no SPF record on the apex**. Google Workspace sends as
+`@humcreative.co` but no `v=spf1` TXT is published; DKIM and DMARC are both
+present. Nothing is being rejected (`p=none`), so this is a deliverability
+improvement rather than an outage. It is one TXT record in the Squarespace DNS
+panel, and should be done on its own so any change in mail behaviour has an
+unambiguous cause.
+
+---
+
 ## Forms - do not rename these
 
 Both forms are Netlify Forms. Routing is **not** in the code: each form's email
