@@ -1269,15 +1269,39 @@ p { margin: 0; text-wrap: pretty; }
    Either way the height is settled before any image loads, so swapping frames
    can never move the page. */
 .studio__slides {
+  /* Height cap for the stacked plate. Width is derived from it below, so this
+     is the one number that sizes the stacked photo. */
+  --plate-h: 60vh;
+
   overflow: hidden;
   aspect-ratio: 3 / 4;
-  max-height: 60vh;
+  /* width must stay definite. Every frame inside is absolutely positioned, so
+     there is no in-flow content to size against: with an indefinite width the
+     box resolves to 0 wide and aspect-ratio then makes it 0 tall. width:100%
+     keeps it definite, max-width caps it at whatever --plate-h allows at 3:4,
+     and the auto margins centre the remainder. Do not swap width:100% for a
+     bare `margin-inline:auto` - that removes the grid stretch and collapses
+     the box. */
+  width: 100%;
+  max-width: calc(var(--plate-h) * 3 / 4);
+  margin-inline: auto;
 }
 
+/* Stacked on a viewport wide enough that a 60vh plate looks stranded against
+   a full-width ink section. More height means more width at 3:4, so the plate
+   holds the section instead of floating in it. Whole frame, still no crop. */
+@media (min-width: 700px) and (max-width: 1199.98px) {
+  .studio__slides { --plate-h: 78vh; }
+}
+
+/* Two columns: the box stretches to the grid row instead, so every stacked
+   constraint above has to be released or it stays a narrow centred plate. */
 @media (min-width: 1200px) {
   .studio__slides {
     aspect-ratio: auto;
-    max-height: none;
+    width: auto;
+    max-width: none;
+    margin-inline: 0;
   }
 }
 
