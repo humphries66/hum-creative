@@ -1269,12 +1269,31 @@ p { margin: 0; text-wrap: pretty; }
    Either way the height is settled before any image loads, so swapping frames
    can never move the page. */
 .studio__slides {
-  /* Height cap for the stacked plate. Width is derived from it below, so this
-     is the one number that sizes the stacked photo. */
-  --plate-h: 60vh;
+  /* Inset ramp. This is what makes the full-bleed -> card change smooth, and
+     it works by removing the jump rather than animating it: width is a
+     continuous function of the viewport, so there is nothing to tween and the
+     box tracks a drag 1:1 with no lag.
+
+     Never put a transition on `width` here. Width is recomputed on every frame
+     of a resize, so a transition would make the photo chase the window edge a
+     step behind for the whole drag - it reads as broken, not smooth. Only
+     properties that are CONSTANT within a band are transitioned below.
+
+     0 until 600px, reaching the 21% that gives a 58%-wide card by ~800px. Real
+     phones top out around 430px, so they never leave 0 and stay full bleed. */
+  --card-inset: clamp(0px, (100vw - 600px) * 1.05, 21%);
 
   overflow: hidden;
   aspect-ratio: 3 / 4;
+
+  /* rotate, border-radius and margin-top do not change while you drag WITHIN a
+     band - only at the crossing - so these animate exactly once, cleanly.
+     The global reduced-motion rule at the end of this file clamps the duration
+     to 150ms rather than zeroing it, which is the behaviour we want: this is a
+     response to a deliberate resize, not ambient motion. */
+  transition: rotate var(--base) var(--ease),
+              border-radius var(--base) var(--ease),
+              margin-top var(--base) var(--ease);
   /* width must stay definite. Every frame inside is absolutely positioned, so
      there is no in-flow content to size against: with an indefinite width the
      box resolves to 0 wide and aspect-ratio then makes it 0 tall. width:100%
@@ -1282,8 +1301,7 @@ p { margin: 0; text-wrap: pretty; }
      and the auto margins centre the remainder. Do not swap width:100% for a
      bare `margin-inline:auto` - that removes the grid stretch and collapses
      the box. */
-  width: 100%;
-  max-width: calc(var(--plate-h) * 3 / 4);
+  width: calc(100% - var(--card-inset) * 2);
   margin-inline: auto;
 }
 
@@ -1293,8 +1311,9 @@ p { margin: 0; text-wrap: pretty; }
    width. 3:4 is kept, so nothing is cropped. */
 @media (max-width: 699.98px) {
   .studio__slides {
+    /* margin-inline stays auto so the ramp can centre the box the moment the
+       inset leaves 0; at inset 0 auto resolves to 0 and this is full bleed. */
     max-width: none;
-    margin-inline: 0;
   }
 }
 
@@ -1330,8 +1349,9 @@ p { margin: 0; text-wrap: pretty; }
    above the copy. 58% keeps it substantial without pushing the copy off. */
 @media (min-width: 700px) and (max-width: 1199.98px) and (orientation: portrait) {
   .studio__slides {
-    width: 58%;
-    margin: 56px auto 0;
+    /* No width here - the ramp above already lands on 58% by ~800px, and
+       hard-coding it back would reintroduce the jump this removes. */
+    margin-top: 56px;
   }
 }
 
@@ -1345,8 +1365,9 @@ p { margin: 0; text-wrap: pretty; }
 
   .studio__slides {
     align-self: start;
+    /* Column-relative, so the vw-based ramp is overridden here. */
     width: min(84%, calc(62vh * 3 / 4));
-    margin: 72px auto 0;
+    margin-top: 72px;
   }
 }
 
