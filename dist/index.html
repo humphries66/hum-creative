@@ -6,10 +6,21 @@
 <title>Hum Creative Co. | Creative that helps you look like yourself</title>
 <meta name="description" content="Hum Creative Co. A small creative practice. Brand strategy and creative direction. Booking spring 2027.">
 
+<link rel="canonical" href="https://humcreative.co/">
+
+<!-- og:image and twitter:image MUST be absolute. Relative paths are silently
+     dropped by several scrapers (LinkedIn and Facebook among them), which is
+     why the preview used to come back blank. -->
 <meta property="og:title" content="Hum Creative Co.">
 <meta property="og:description" content="Creative that helps you look like yourself.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="/assets/img/hum-messy-header.png">
+<meta property="og:url" content="https://humcreative.co/">
+<meta property="og:site_name" content="Hum Creative Co.">
+<meta property="og:image" content="https://humcreative.co/assets/img/hum-messy-header.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hum Creative Co.">
+<meta name="twitter:description" content="Creative that helps you look like yourself.">
+<meta name="twitter:image" content="https://humcreative.co/assets/img/hum-messy-header.png">
 
 <link rel="icon" href="/assets/img/hum-logo.svg">
 <link rel="preload" as="font" type="font/otf" href="/assets/fonts/AlternateGothicNo3D-Regular.otf" crossorigin>
@@ -24,27 +35,70 @@
      for a single word. -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jacquard+24&display=swap">
+<!-- LocalBusiness (not the bare ProfessionalService this replaced): the
+     narrower type is what Google reads for local results. Every value here must
+     match the Google Business Profile character for character - Google
+     cross-checks them, and a mismatch is worse than an omission.
+
+     No "geo" on purpose. A guessed lat/long is worse than none; Google
+     geocodes a complete PostalAddress on its own. Add real coordinates here if
+     they are ever measured, not estimated.
+
+     areaServed used to say "United States", which actively worked against
+     ranking locally. Services mirror the contact form's project_type options,
+     so the schema and the form cannot drift apart. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
+  "@type": "LocalBusiness",
+  "@id": "https://humcreative.co/#studio",
   "name": "Hum Creative Co",
-  "description": "A small creative practice. Brand strategy and creative direction.",
+  "alternateName": "Hum Creative",
+  "description": "A small creative practice in downtown Decatur, Georgia. Brand identity, packaging, campaign and website work.",
   "url": "https://humcreative.co",
   "email": "hum@humcreative.co",
+  "telephone": "+1-404-670-2044",
+  "image": "https://humcreative.co/assets/img/hum-messy-header.png",
+  "logo": "https://humcreative.co/assets/img/hum-logo.svg",
+  "priceRange": "$$$",
   "address": {
     "@type": "PostalAddress",
+    "streetAddress": "245 E Trinity Pl",
     "addressLocality": "Decatur",
     "addressRegion": "GA",
+    "postalCode": "30030",
     "addressCountry": "US"
   },
-  "areaServed": { "@type": "Country", "name": "United States" },
+  "areaServed": [
+    { "@type": "City", "name": "Decatur, Georgia" },
+    { "@type": "City", "name": "Atlanta, Georgia" },
+    { "@type": "Place", "name": "East Atlanta" },
+    { "@type": "Place", "name": "Kirkwood" },
+    { "@type": "Place", "name": "Oakhurst" },
+    { "@type": "Place", "name": "Avondale Estates" }
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Jared Humphries",
+    "jobTitle": "Founder",
+    "worksFor": { "@id": "https://humcreative.co/#studio" }
+  },
+  "knowsAbout": [
+    "Brand identity",
+    "Brand strategy",
+    "Creative direction",
+    "Packaging design",
+    "Campaign creative",
+    "Web design"
+  ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Services",
     "itemListElement": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Brand strategy" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Creative direction" } }
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Brand identity" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Packaging" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Campaign" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Website" } }
     ]
   }
 }
@@ -338,7 +392,9 @@ YOU LOOK LIKE <span class="hero__tagline-jacquard">Yourself</span></div>
       <div class="footer__col">
         <h2 class="footer__h">Studio</h2>
         <ul class="footer__list">
-          <li>Decatur, GA</li>
+          <li>245 E Trinity Pl</li>
+          <li>Decatur, GA 30030</li>
+          <li><a href="tel:+14046702044">404 670 2044</a></li>
           <li>Booking spring 2027</li>
         </ul>
       </div>

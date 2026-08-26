@@ -17,6 +17,16 @@
   # is still a broken deploy, and there is no build to run.
   command = ""
 
+# /index.html answers 200 on its own, which makes it a duplicate of / for
+# crawlers. The canonical tag in the page states the preference; this makes it
+# unambiguous. force = true because a file of that name really does exist, so
+# without it the static file wins and the redirect never fires.
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
 # The graphic-design portfolio is a standalone static page at dist/portfolio/.
 # Netlify serves dist/portfolio/index.html for the bare /portfolio path on its
 # own, but the rule is kept explicit so the behaviour survives future edits.

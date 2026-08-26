@@ -1,0 +1,5 @@
+# Hum Creative Co.
+User-agent: *
+Allow: /
+
+Sitemap: https://humcreative.co/sitemap.xml
