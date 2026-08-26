@@ -1287,11 +1287,72 @@ p { margin: 0; text-wrap: pretty; }
   margin-inline: auto;
 }
 
-/* Stacked on a viewport wide enough that a 60vh plate looks stranded against
-   a full-width ink section. More height means more width at 3:4, so the plate
-   holds the section instead of floating in it. Whole frame, still no crop. */
+/* PHONE - stacked and full bleed. The plate cap is what left a ~5px strip of
+   ink down each side at 390px (60vh x 3/4 = 380 inside a 390 section), so the
+   cap and the centring margins both come off and the photo takes the whole
+   width. 3:4 is kept, so nothing is cropped. */
+@media (max-width: 699.98px) {
+  .studio__slides {
+    max-width: none;
+    margin-inline: 0;
+  }
+}
+
+/* 700-1199 - THE TILTED CARD.
+   Covers tablets and a desktop window resized below the width the full-height
+   photo column needs. Both get the same treatment: there is no reliable way to
+   tell them apart (pointer/hover media queries lie on hybrids), and once the
+   card exists there is no reason to.
+
+   The card borrows the .gallery__card motif from the projects rail - 3:4,
+   18px radius, set slightly askew. 3:4 is the frames' own ratio (800x1066),
+   so unlike a stretched column this crops nothing at all.
+
+   Angle uses the `rotate` property, not transform: rotate(). site.js does not
+   transform this element today, but .gallery__card documents why the codebase
+   prefers `rotate` - a transform here would be clobbered the moment anything
+   animates transform (a .reveal, for instance, uses translateY). */
 @media (min-width: 700px) and (max-width: 1199.98px) {
-  .studio__slides { --plate-h: 78vh; }
+  .studio__slides {
+    aspect-ratio: 3 / 4;
+    border-radius: 18px;
+    rotate: -1.6deg;
+    max-width: none;
+  }
+
+  /* The tilt needs room or `overflow:hidden` on .studio slices the corners -
+     the same problem --gallery-tilt-room solves for the rail. Rotating this
+     card 1.6deg pushes its corners ~8px sideways and ~6px vertically past the
+     upright box, so the margins below are floors, not decoration. */
+}
+
+/* Tablet PORTRAIT (and any tall narrow window in the band) - card centred
+   above the copy. 58% keeps it substantial without pushing the copy off. */
+@media (min-width: 700px) and (max-width: 1199.98px) and (orientation: portrait) {
+  .studio__slides {
+    width: 58%;
+    margin: 56px auto 0;
+  }
+}
+
+/* Tablet LANDSCAPE (and a shrunk desktop window, which is nearly always
+   landscape) - card beside the copy, top-aligned, using the width these
+   viewports actually have. Height is capped against the viewport so the card
+   cannot outgrow a 768px-tall screen: 62vh at 3:4 is the binding constraint
+   there, 84% of the column on wider ones. */
+@media (min-width: 700px) and (max-width: 1199.98px) and (orientation: landscape) {
+  .studio { grid-template-columns: 5fr 7fr; }
+
+  .studio__slides {
+    align-self: start;
+    width: min(84%, calc(62vh * 3 / 4));
+    margin: 72px auto 0;
+  }
+}
+
+/* The tilt is decoration, exactly as it is on the gallery cards. */
+@media (prefers-reduced-motion: reduce) {
+  .studio__slides { rotate: none; }
 }
 
 /* Two columns: the box stretches to the grid row instead, so every stacked
