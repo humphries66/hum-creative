@@ -2038,11 +2038,12 @@ p { margin: 0; text-wrap: pretty; }
   transition: opacity var(--base) var(--ease);
 }
 
-/* Refuge and GLS are round/square marks rather than wordmarks, so they read
-   much smaller than a wide lockup at the same max-height. Give them their own
-   ceiling so the optical weight across the row stays even. */
-.proof__cell:nth-child(2) .proof__logo,
-.proof__cell:nth-child(6) .proof__logo { max-height: 52px; }
+/* Round/square marks read much smaller than a wide lockup at the same
+   max-height, so they get their own ceiling to keep optical weight even across
+   the row. Tagged in the markup rather than by :nth-child - position-based
+   selectors silently retarget the wrong logo the moment one is inserted, which
+   is exactly what adding Estaca would have done. */
+.proof__logo--mark { max-height: 52px; }
 
 @media (hover: hover) {
   .proof__logo:hover { opacity: 1; }
@@ -2054,11 +2055,20 @@ p { margin: 0; text-wrap: pretty; }
 
 @media (min-width: 900px) {
   .proof { padding: 16px var(--gutter) 96px; }
-  .proof__grid { grid-template-columns: repeat(6, 1fr); }
+  .proof__grid { grid-template-columns: repeat(4, 1fr); }
   .proof__cell { min-height: 132px; padding: 30px 22px; }
   .proof__logo { max-height: 44px; }
-  .proof__cell:nth-child(2) .proof__logo,
-  .proof__cell:nth-child(6) .proof__logo { max-height: 62px; }
+  .proof__logo--mark { max-height: 62px; }
+}
+
+/* One clean row. The column count tracks the number of logos, so it has to be
+   updated when one is added or removed - at 7 items a 6-column grid strands a
+   single orphan cell on its own row. Horizontal padding tightens here because
+   a seventh column takes ~180px, and BELAY (a ~6:1 lockup) is width-bound
+   rather than height-bound in a cell that narrow. */
+@media (min-width: 1180px) {
+  .proof__grid { grid-template-columns: repeat(7, 1fr); }
+  .proof__cell { padding: 30px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
