@@ -519,6 +519,11 @@
          done
     */
     var IMG_DIMS = {
+      '/assets/img/work/belay/cover.jpg':                [1400, 934],
+      '/assets/img/work/belay/shot-01.jpg':              [1800, 1200],
+      '/assets/img/work/belay/shot-02.jpg':              [1800, 1012],
+      '/assets/img/work/belay/shot-03.jpg':              [1800, 1012],
+      '/assets/img/work/belay/shot-04.jpg':              [1800, 1183],
       '/assets/img/hero-boring-must-die.png':            [2175, 1372],
       '/assets/img/hero-creative-co.png':                [2175, 1372],
       '/assets/img/hero-hum.png':                        [2175, 1372],
@@ -798,6 +803,31 @@
                     'Bottle design + 3D modelling', 'Creative direction',
                     'Photography art direction'],
             note: 'Decatur, GA'
+          } }
+        ]
+      },
+      {
+        id: 'belay',
+        title: 'BELAY Solutions',
+        category: 'Web & content',
+        coverImage: '/assets/img/work/belay/cover.jpg',
+        description: 'BELAY sells executives their time back. We rewrote the landing pages, reorganised the content around them, and built the campaign pages the marketing calendar kept asking for.',
+        galleryImages: [
+          { src: '/assets/img/work/belay/shot-01.jpg',
+            alt: 'Direct mail pieces carrying the line \u201cOne trusted partner. Every back-office need.\u201d' },
+          { src: '/assets/img/work/belay/shot-02.jpg',
+            alt: 'Campaign creative: save ten-plus hours every week, your inventory is lying to you, stop executive burnout' },
+          { src: '/assets/img/work/belay/shot-03.jpg',
+            alt: 'Social creative built on BELAY\u2019s own research statistics' },
+          { src: '/assets/img/work/belay/shot-04.jpg',
+            alt: 'Downloadable guides: outsourced accounting, and fractional financial services' },
+          { doc: '/portfolio/assets/docs/belay-executives-guide.pdf',
+            label: 'The lead magnet: an executive\u2019s guide to saving ten hours a week',
+            meta: 'PDF \u00b7 351KB' },
+          { credits: {
+            items: ['Web content', 'Landing pages', 'Messaging + copy',
+                    'Content architecture', 'Campaign pages', 'Lead-gen assets'],
+            note: 'Atlanta, GA'
           } }
         ]
       },

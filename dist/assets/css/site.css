@@ -620,15 +620,22 @@ p { margin: 0; text-wrap: pretty; }
       card visibly snaps to a new angle at the jump - which is precisely what
       makes the loop seam, otherwise invisible, visible.
 
-      ADDING OR REMOVING A PROJECT MEANS CHANGING THE 6n BELOW AND ADDING OR
-      REMOVING A STOP. This has already been stepped through once, 5n -> 6n,
-      when ESTACA was added. */
-.gallery__card:nth-child(6n+1) { rotate: -2deg; }
-.gallery__card:nth-child(6n+2) { rotate: 1.3deg; }
-.gallery__card:nth-child(6n+3) { rotate: -1deg; }
-.gallery__card:nth-child(6n+4) { rotate: 2.1deg; }
-.gallery__card:nth-child(6n+5) { rotate: -1.6deg; }
-.gallery__card:nth-child(6n+6) { rotate: 0.9deg; }
+      ADDING OR REMOVING A PROJECT MEANS CHANGING THE 7n BELOW AND ADDING OR
+      REMOVING A STOP. Stepped through twice now: 5n -> 6n when ESTACA was
+      added, 6n -> 7n when BELAY was.
+
+      The seventh angle is deliberately the gentlest. Seven is odd, so a cycle
+      of alternating signs cannot close on itself - somewhere in the loop two
+      same-sign cards must sit next to each other. Putting the flattest value
+      (-0.7) immediately before the steepest (-2) makes that unavoidable pair
+      read as an easing rather than a repeat. */
+.gallery__card:nth-child(7n+1) { rotate: -2deg; }
+.gallery__card:nth-child(7n+2) { rotate: 1.3deg; }
+.gallery__card:nth-child(7n+3) { rotate: -1deg; }
+.gallery__card:nth-child(7n+4) { rotate: 2.1deg; }
+.gallery__card:nth-child(7n+5) { rotate: -1.6deg; }
+.gallery__card:nth-child(7n+6) { rotate: 0.9deg; }
+.gallery__card:nth-child(7n+7) { rotate: -0.7deg; }
 
 /* Rotation is decoration, same as the drift. */
 @media (prefers-reduced-motion: reduce) {
