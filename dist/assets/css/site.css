@@ -2006,6 +2006,18 @@ p { margin: 0; text-wrap: pretty; }
 
 /* Full-bleed past the section gutter so the rules meet the page edges, the way
    the reference does. Negative margin matches .work .gallery's approach. */
+/* COLUMN COUNTS MUST DIVIDE THE NUMBER OF LOGOS. A grid only fills cleanly when
+   it does; anything else leaves a ragged last row, and a remainder of exactly 1
+   strands a single logo on a row by itself.
+
+   At 8 logos the divisors are 2, 4 and 8, so those are the only counts used
+   here. 7 columns was correct at 7 logos and became the stray-maker the moment
+   an eighth arrived (8 = 7 + 1) - it is gone. A 3-column step was dropped for
+   the same reason (8 = 3 + 3 + 2).
+
+   The :last-child rules in the breakpoints below repair a stray automatically
+   if the count ever stops dividing, so this comment is a explanation rather
+   than the only line of defence. */
 .proof__grid {
   list-style: none;
   margin: 0 calc(var(--gutter) * -1);
@@ -2049,26 +2061,24 @@ p { margin: 0; text-wrap: pretty; }
   .proof__logo:hover { opacity: 1; }
 }
 
-@media (min-width: 560px) {
-  .proof__grid { grid-template-columns: repeat(3, 1fr); }
+/* 2 columns below this - 8 logos make 4 full rows. A last cell landing in
+   column 1 would be alone on its row; span it instead. Inert at any even count,
+   including today's 8. */
+.proof__cell:last-child:nth-child(2n + 1) { grid-column: 1 / -1; }
+
+/* 4 over 4. */
+@media (min-width: 640px) {
+  .proof__grid { grid-template-columns: repeat(4, 1fr); }
+  .proof__cell:last-child:nth-child(2n + 1) { grid-column: auto; }
+  .proof__cell:last-child:nth-child(4n + 1) { grid-column: 1 / -1; }
 }
 
+/* Only sizing from here up - the column count is already 4 and stays 4. */
 @media (min-width: 900px) {
   .proof { padding: 16px var(--gutter) 96px; }
-  .proof__grid { grid-template-columns: repeat(4, 1fr); }
   .proof__cell { min-height: 132px; padding: 30px 22px; }
   .proof__logo { max-height: 44px; }
   .proof__logo--mark { max-height: 62px; }
-}
-
-/* One clean row. The column count tracks the number of logos, so it has to be
-   updated when one is added or removed - at 7 items a 6-column grid strands a
-   single orphan cell on its own row. Horizontal padding tightens here because
-   a seventh column takes ~180px, and BELAY (a ~6:1 lockup) is width-bound
-   rather than height-bound in a cell that narrow. */
-@media (min-width: 1180px) {
-  .proof__grid { grid-template-columns: repeat(7, 1fr); }
-  .proof__cell { padding: 30px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
