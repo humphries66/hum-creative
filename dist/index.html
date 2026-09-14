@@ -244,6 +244,46 @@ YOU LOOK LIKE <span class="hero__tagline-jacquard">Yourself</span></div>
   </div>
 </section>
 
+<!-- ── Proof bar ──────────────────────────────────────────────────────────── -->
+<!-- Real client marks, every one sourced from the client's own site (Chick-fil-A
+     from Wikimedia, PD-textlogo). They arrive in six different brand colours and
+     two of them ship white-on-transparent for dark backgrounds, so CSS forces
+     the lot to a single ink silhouette - see .proof__logo in site.css. That is
+     what makes a logo wall read as one system instead of a ransom note.
+
+     width/height on every img is deliberate, not decoration: without them these
+     occupy zero height until they decode and the grid collapses then snaps. Same
+     bug that made the project dialog flash; see IMG_DIMS in site.js. -->
+<section class="proof" aria-labelledby="proof-h">
+  <h2 class="proof__h" id="proof-h">We&rsquo;ve been trusted by:</h2>
+  <ul class="proof__grid">
+    <li class="proof__cell">
+      <img class="proof__logo" src="/assets/img/clients/chickfila.svg"
+           width="582" height="263" loading="lazy" decoding="async" alt="Chick-fil-A">
+    </li>
+    <li class="proof__cell">
+      <img class="proof__logo" src="/assets/img/clients/gls.svg"
+           width="88" height="89" loading="lazy" decoding="async" alt="The Global Leadership Summit">
+    </li>
+    <li class="proof__cell">
+      <img class="proof__logo" src="/assets/img/clients/belay.png"
+           width="600" height="101" loading="lazy" decoding="async" alt="BELAY Solutions">
+    </li>
+    <li class="proof__cell">
+      <img class="proof__logo" src="/assets/img/clients/thrush.svg"
+           width="298" height="112" loading="lazy" decoding="async" alt="Thrush Aircraft">
+    </li>
+    <li class="proof__cell">
+      <img class="proof__logo" src="/assets/img/clients/striplings.png"
+           width="250" height="86" loading="lazy" decoding="async" alt="Stripling&rsquo;s">
+    </li>
+    <li class="proof__cell">
+      <img class="proof__logo" src="/assets/img/clients/refuge.png"
+           width="594" height="600" loading="lazy" decoding="async" alt="Refuge Coffee Co.">
+    </li>
+  </ul>
+</section>
+
 <!-- ── Shout band ─────────────────────────────────────────────────────────── -->
 <!-- Three rows of the same phrase drifting right at three different speeds as
      the band crosses the viewport. The stagger is the whole effect. The rail is
