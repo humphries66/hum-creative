@@ -143,7 +143,8 @@ p { margin: 0; text-wrap: pretty; }
    first label, a block, started flush. That made the two columns of the
    contact section read as misaligned at the top. Block-level removes the line
    box; fit-content keeps it shrink-wrapped so the rule and text stay tight.
-   Used exactly once (the contact section), so this is safe to change here. */
+   Used TWICE now - the contact section and the proof bar heading - so changes
+   here move both. */
 .eyebrow {
   display: flex;
   width: fit-content;
@@ -1998,15 +1999,10 @@ p { margin: 0; text-wrap: pretty; }
   padding: 8px var(--gutter) 72px;
 }
 
-.proof__h {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(30px, 5.2vw, 52px);
-  line-height: 1.05;
-  letter-spacing: -.01em;
-  color: var(--ink);
-  margin: 0 0 28px;
-}
+/* The look comes entirely from .eyebrow (Alternate Gothic caps + the chartreuse
+   dash). All this adds is the spacing, so the two eyebrows on the page cannot
+   drift apart. */
+.proof__h { margin: 0 0 24px; }
 
 /* Full-bleed past the section gutter so the rules meet the page edges, the way
    the reference does. Negative margin matches .work .gallery's approach. */
