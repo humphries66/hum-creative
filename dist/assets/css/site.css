@@ -830,6 +830,70 @@ p { margin: 0; text-wrap: pretty; }
 }
 .gallery__doc:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
+/* Preview variant: the document's first page sits beside the label, so the
+   block reads as something to open rather than as a line of metadata about the
+   project. The anchor stays one tap target - the image is inside it.
+
+   Column on phones (the page render on top, text beneath), row from 560px up
+   where there is width for both. The thumbnail keeps a paper edge - a hairline
+   and a soft drop - because a page render bleeding straight into newsprint
+   loses its edges and stops reading as a document. */
+.gallery__doc--preview {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  padding: 16px;
+  max-width: 520px;
+}
+
+/* Scoped to .gallery__detail-gallery deliberately. The doc card lives inside
+   it, and `.gallery__detail-gallery img` (0,1,1) already sets width:100% - a
+   bare .gallery__doc-thumb (0,1,0) loses to it, so the width below is ignored
+   and the page render fills the card, squeezing the label into one-word lines. */
+.gallery__detail-gallery .gallery__doc-thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(37, 41, 38, .16);
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(37, 41, 38, .10);
+  background: var(--paper);
+  transition: transform var(--base) var(--ease), box-shadow var(--base) var(--ease);
+}
+
+.gallery__doc--preview .gallery__doc-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+@media (hover: hover) {
+  .gallery__detail-gallery .gallery__doc--preview:hover .gallery__doc-thumb {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(37, 41, 38, .16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery__doc-thumb { transition: none; }
+  .gallery__detail-gallery .gallery__doc--preview:hover .gallery__doc-thumb { transform: none; }
+}
+
+@media (min-width: 560px) {
+  .gallery__doc--preview {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 20px;
+    padding: 18px;
+  }
+  /* Give the page render a fixed share so the label is not squeezed to a
+     column of single words on narrow tablets. */
+  .gallery__detail-gallery .gallery__doc-thumb {
+    width: 132px; flex: none; align-self: flex-start;
+  }
+}
+
 .gallery__doc-label {
   font-family: var(--font-gothic);
   font-size: 14px;

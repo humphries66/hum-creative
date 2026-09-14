@@ -519,11 +519,12 @@
          done
     */
     var IMG_DIMS = {
-      '/assets/img/work/belay/cover.jpg':                [1400, 934],
+      '/assets/img/work/belay/cover.jpg':                [1400, 920],
       '/assets/img/work/belay/shot-01.jpg':              [1800, 1200],
       '/assets/img/work/belay/shot-02.jpg':              [1800, 1012],
       '/assets/img/work/belay/shot-03.jpg':              [1800, 1012],
-      '/assets/img/work/belay/shot-04.jpg':              [1800, 1183],
+      '/assets/img/work/belay/shot-04.jpg':              [1800, 1202],
+      '/assets/img/work/belay/guide-cover.jpg':          [695, 900],
       '/assets/img/hero-boring-must-die.png':            [2175, 1372],
       '/assets/img/hero-creative-co.png':                [2175, 1372],
       '/assets/img/hero-hum.png':                        [2175, 1372],
@@ -820,8 +821,9 @@
           { src: '/assets/img/work/belay/shot-03.jpg',
             alt: 'Social creative built on BELAY\u2019s own research statistics' },
           { src: '/assets/img/work/belay/shot-04.jpg',
-            alt: 'Downloadable guides: outsourced accounting, and fractional financial services' },
+            alt: 'Pages of the BELAY marketing site shown as angled browser mockups' },
           { doc: '/portfolio/assets/docs/belay-executives-guide.pdf',
+            thumb: '/assets/img/work/belay/guide-cover.jpg',
             label: 'The lead magnet: an executive\u2019s guide to saving ten hours a week',
             meta: 'PDF \u00b7 351KB' },
           { credits: {
@@ -1286,22 +1288,43 @@
           return sec;
         }
 
+        /* An optional `thumb` turns the plain labelled link into a card with
+           the document's first page beside it. A text-only link reads as
+           metadata about the project; a page you can actually see reads as
+           something to open. The text half still carries the whole message, so
+           the thumbnail is decorative (alt="") and a doc without one renders
+           exactly as before. */
         if (item.doc) {
           var a = document.createElement('a');
-          a.className = 'gallery__doc';
+          a.className = 'gallery__doc' + (item.thumb ? ' gallery__doc--preview' : '');
           a.href = item.doc;
           a.target = '_blank';
           a.rel = 'noopener';
+
+          if (item.thumb) {
+            var dt = document.createElement('img');
+            dt.className = 'gallery__doc-thumb';
+            dt.src = item.thumb;
+            dt.alt = '';                 // the label beside it is the accessible name
+            dt.loading = 'lazy';
+            dt.decoding = 'async';
+            sizeImg(dt, item.thumb);     // reserve the box - see IMG_DIMS
+            a.appendChild(dt);
+          }
+
+          var dtext = document.createElement('span');
+          dtext.className = 'gallery__doc-text';
           var dl = document.createElement('span');
           dl.className = 'gallery__doc-label';
           dl.textContent = item.label || 'Open document';
-          a.appendChild(dl);
+          dtext.appendChild(dl);
           if (item.meta) {
             var dm = document.createElement('span');
             dm.className = 'gallery__doc-meta';
             dm.textContent = item.meta;
-            a.appendChild(dm);
+            dtext.appendChild(dm);
           }
+          a.appendChild(dtext);
           return a;
         }
 
