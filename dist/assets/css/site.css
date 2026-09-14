@@ -1866,6 +1866,7 @@ p { margin: 0; text-wrap: pretty; }
    to each element, so all of them paint exactly the pixels the body did. */
 .hero,
 .work,
+.proof,
 .section {
   background: var(--newsprint) url("../img/hum-bg-texture.jpg") center / cover fixed;
 }
@@ -1873,6 +1874,7 @@ p { margin: 0; text-wrap: pretty; }
 @media (max-width: 900px) {
   .hero,
   .work,
+  .proof,
   .section {
     background-attachment: scroll;
   }
@@ -1881,11 +1883,21 @@ p { margin: 0; text-wrap: pretty; }
 /* Every content section rides above the pinned footer. .shout and .studio carry
    their own opaque colours already and only need the stacking order.
 
-   ADD ANY NEW TOP-LEVEL SECTION HERE. The footer is position:sticky with
-   z-index:0, so a section left at position:static paints BELOW it - the footer
-   and its statement text render straight over that section's content. This has
-   already bitten twice (the nav, then .gallery); it is not obvious from looking
-   at the new section's own CSS, because nothing there is wrong.
+   ADD ANY NEW TOP-LEVEL SECTION HERE, AND TO THE OCCLUSION BLOCK ABOVE. The
+   footer is position:sticky with z-index:0, so a section left at
+   position:static paints BELOW it, and a section with no background lets the
+   dark footer show straight through - the footer and its statement text render
+   over that section's content.
+
+   This has now bitten THREE times: the nav, then .gallery, then .proof. It is
+   not obvious from looking at the new section's own CSS, because nothing there
+   is wrong - the section is only broken by what it FAILS to join. Both lists
+   are required; joining one and not the other still leaks.
+
+   Quick check for any new section, scrolled so it covers the viewport bottom:
+     document.elementFromPoint(innerWidth/2, innerHeight-20).closest('section,footer')
+   It must return the section. If it returns the footer, the section is missing
+   from one of these two lists.
 
    .gallery is not listed any more - it now lives inside .work and rides on
    .work's z-index. If it is ever lifted back out to top level, it has to come
@@ -1894,6 +1906,7 @@ p { margin: 0; text-wrap: pretty; }
    below the nav and footer. */
 .hero,
 .work,
+.proof,
 .shout,
 .studio,
 .section {
@@ -1979,7 +1992,9 @@ p { margin: 0; text-wrap: pretty; }
    Requires transparent backgrounds - all six have them. A logo on a solid white
    plate would come through as a black rectangle. */
 .proof {
-  position: relative;
+  /* position/z-index/background are NOT set here. They come from the footer
+     occlusion and stacking rules at the bottom of this file, which every
+     top-level section must join - see the comment there. */
   padding: 8px var(--gutter) 72px;
 }
 
