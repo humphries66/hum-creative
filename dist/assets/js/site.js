@@ -603,7 +603,17 @@
       '/assets/img/work/secret-show/signage.jpg':        [1600, 1066],
       '/assets/img/work/secret-show/social.jpg':         [1600, 900],
       '/assets/img/work/secret-show/web.jpg':            [1600, 1066],
-      '/assets/img/work/secret-show/wordmark.jpg':       [1600, 900]
+      '/assets/img/work/secret-show/wordmark.jpg':       [1600, 900],
+      '/assets/img/work/wilsons/boxes.jpg':              [1600, 1200],
+      '/assets/img/work/wilsons/cover.jpg':              [1400, 787],
+      '/assets/img/work/wilsons/favorites.jpg':          [1800, 1125],
+      '/assets/img/work/wilsons/marks.jpg':              [1800, 1012],
+      '/assets/img/work/wilsons/phone-before.jpg':       [600, 1298],
+      '/assets/img/work/wilsons/site-before.jpg':        [1800, 1125],
+      '/assets/img/work/wilsons/sticker-after.jpg':      [1200, 1200],
+      '/assets/img/work/wilsons/sticker-before.jpg':     [1200, 1200],
+      '/assets/img/work/wilsons/story.jpg':              [1800, 1125],
+      '/assets/img/work/wilsons/tshirts.jpg':            [1600, 1200]
     };
 
     /* Applies the reserved box. No-op when the path is unknown, so a stale map
@@ -619,6 +629,94 @@
     // Placeholder data - real projects replace this array later. Every
     // downstream piece (cards, dialog) renders purely from this shape.
     var PROJECTS = [
+      {
+        id: 'wilsons',
+        title: 'Wilson’s Bakery',
+        category: 'Brand refresh & website',
+        /* The white sticker over a bakery-case photo pushed into an indigo
+           duotone, so it reads as texture and the header stays Wilson's
+           blue. Centred and sized to survive both crops: the 3:4 card and
+           the 2.29:1 detail band. */
+        coverImage: '/assets/img/work/wilsons/cover.jpg',
+        description: 'Wilson’s Bakery has fed Warner Robins since 1953. Three generations of Middle Georgia birthdays came out of that bakery case, and everyone in town knows the Fingernut Cookie.\n\nThe brand held up. The sticker on every box already belonged to the town, so we kept what people love and cleaned it up. One sticker became a set of seven marks for boxes, signs, shirts and screens.\n\nThe website needed real work. We rebuilt it around one job: getting a box of Fingernuts from someone’s phone to the pickup counter.',
+        galleryImages: [
+          { heading: 'The sticker' },
+          /* Both square, so the pair sits level. */
+          { row: [
+            { src: '/assets/img/work/wilsons/sticker-before.jpg',
+              alt: 'The original Wilson’s Bakery sticker on a box of Fingernut Cookies, with extra circular lines crowding the lettering.',
+              tag: 'before', caption: 'On the box today' },
+            { src: '/assets/img/work/wilsons/sticker-after.jpg',
+              alt: 'The redrawn Wilson’s Bakery sticker: indigo circle, two clean rings, script wordmark, Home of the Fingernut Cookie and Est. 1953.',
+              tag: 'after', caption: 'Even margins, two clean rings, one indigo' }
+          ] },
+          { src: '/assets/img/work/wilsons/marks.jpg',
+            alt: 'The Wilson’s Bakery mark set in indigo on cream: outline sticker, round logo, oval badge, horizontal wordmark, and solid and outline W monogram seals.' },
+          { heading: 'In the shop' },
+          /* Both 4:3 on the brand cream, so they sit level. */
+          { row: [
+            { src: '/assets/img/work/wilsons/boxes.jpg',
+              alt: 'Wilson’s Bakery pastry boxes: an indigo box with the W monogram seal and Go Sweet or Go Home on the side, and a cream box with the round sticker, the Fresh! mascot and Proudly hand-crafted in Warner Robins, GA.' },
+            { src: '/assets/img/work/wilsons/tshirts.jpg',
+              alt: 'Indigo crew t-shirts, front and back: the W monogram seal on the chest and Go Sweet or Go Home across the back.' }
+          ] },
+          { heading: 'The website' },
+          /* Before and after as mirrored panels: desktop and phone overlapping
+             on one side, what was wrong (or what changed) on the other. */
+          { panel: {
+            tag: 'before',
+            media: { devices: {
+              desktop: { src: '/assets/img/work/wilsons/site-before.jpg',
+                alt: 'The old wilsonsbakery.com: a blue and white awning drawn across the top, underlined serif navigation, a faded storefront photo and a gradient address box on a cookie-photo background.' },
+              phone: { src: '/assets/img/work/wilsons/phone-before.jpg',
+                alt: 'The old site on a phone: the full desktop layout shrunk to fit, with navigation too small to tap and text too small to read.' }
+            } },
+            title: 'A site that sent people away.',
+            points: [
+              ['No padlock', 'The security certificate belonged to the web host, so browsers warned visitors off before the page loaded.'],
+              ['No phone layout', 'Phones got the desktop page shrunk to fit. Ten links across an awning, all too small to tap.'],
+              ['Orders left the building', 'Pickup went to a Clover page and delivery went to DoorDash. Neither looked like Wilson’s.'],
+              ['No hours', 'Not listed anywhere. Daily specials lived on Facebook.']
+            ]
+          } },
+          /* Both recorded from the build itself, not mocked up. The desktop
+             take loads the hero, holds, then scrolls the page; the phone take
+             places a whole pickup order. */
+          { panel: {
+            tag: 'after',
+            media: { devices: {
+              desktop: { clip: '/assets/img/work/wilsons/clip-site.mp4',
+                poster: '/assets/img/work/wilsons/poster-site.jpg',
+                crop: 'wide', caption: 'The new homepage, loading and scrolling' },
+              phone: { clip: '/assets/img/work/wilsons/clip-order.mp4',
+                poster: '/assets/img/work/wilsons/poster-order.jpg',
+                crop: 'phone', caption: 'A pickup order placed on a phone' }
+            } },
+            title: 'Order ahead. Walk in. Walk out.',
+            points: [
+              ['Checkout on the site', 'Treats, a pickup day, a 15-minute window and payment, all on wilsonsbakery.com. Apple Pay and Google Pay included.'],
+              ['Straight to the kitchen', 'Paid orders land in the bakery’s Square register and print right before pickup. Staff work the way they already do.'],
+              ['One menu', 'The counter and the website read from the same Square catalog. Mark something sold out once and it disappears from both.'],
+              ['The kitchen sets the pace', 'Six orders per slot, same-day orders close at 1 p.m., and bigger items ask for notice.'],
+              ['Built for the phone', 'Thumb-sized buttons, a cart that slides in, and a real padlock on a new host.']
+            ]
+          } },
+          /* Both 16:10, so they sit level. */
+          { row: [
+            { src: '/assets/img/work/wilsons/favorites.jpg',
+              alt: 'Bestseller cards for Fingernut Cookies, glazed donuts and cinnamon rolls, each with sizes, a quantity stepper and an Add to cart button.' },
+            { src: '/assets/img/work/wilsons/story.jpg',
+              alt: 'The Our Story section: A Middle Georgia tradition, beside taped-on snapshots of the bakery then and now.' }
+          ] },
+          { credits: {
+            items: ['Brand audit', 'Logo refinement', 'Mark system',
+                    'Colour standard', 'Website design + build',
+                    'Order-ahead checkout', 'Square POS integration',
+                    'Pickup scheduling'],
+            note: 'Warner Robins, GA'
+          } }
+        ]
+      },
       {
         id: 'fridge-cig',
         title: 'Fridge Cig',
@@ -1252,6 +1350,59 @@
           return row;
         }
 
+        /* A desktop and a phone in one cell, the phone overlapping the
+           desktop's lower right. Either side can be a still or a clip. */
+        if (item.devices) {
+          var dv = document.createElement('div');
+          dv.className = 'gallery__devices';
+          ['desktop', 'phone'].forEach(function (k) {
+            var dn = renderEntry(item.devices[k], project, clips);
+            if (!dn) return;
+            dn.classList.add('gallery__device', 'gallery__device--' + k);
+            dv.appendChild(dn);
+          });
+          return dv;
+        }
+
+        /* Media on one side, a tag, a headline and numbered points on the
+           other. The 'after' panel mirrors the 'before' one on desktop so
+           the pair reads as a turn rather than a repeat. */
+        if (item.panel) {
+          var pn = item.panel;
+          var ps = document.createElement('section');
+          ps.className = 'gallery__panel gallery__panel--' + pn.tag;
+          var pm = document.createElement('div');
+          pm.className = 'gallery__panel-media';
+          var pmn = renderEntry(pn.media, project, clips);
+          if (pmn) pm.appendChild(pmn);
+          var pt = document.createElement('div');
+          pt.className = 'gallery__panel-text';
+          var ptag = document.createElement('span');
+          ptag.className = 'gallery__tag gallery__tag--' + pn.tag + ' gallery__tag--inline';
+          ptag.textContent = pn.tag;
+          var ph = document.createElement('h3');
+          ph.className = 'gallery__panel-title';
+          ph.textContent = pn.title;
+          var pl = document.createElement('ol');
+          pl.className = 'gallery__panel-points';
+          pn.points.forEach(function (pair) {
+            var li = document.createElement('li');
+            var lead = document.createElement('strong');
+            lead.textContent = pair[0];
+            var rest = document.createElement('span');
+            rest.textContent = pair[1];
+            li.appendChild(lead);
+            li.appendChild(rest);
+            pl.appendChild(li);
+          });
+          pt.appendChild(ptag);
+          pt.appendChild(ph);
+          pt.appendChild(pl);
+          ps.appendChild(pm);
+          ps.appendChild(pt);
+          return ps;
+        }
+
         /* A real downloadable artefact (a deck, a spec). Opens in a new tab
            rather than navigating away from the dialog, which would lose the
            reader's place in the gallery. */
@@ -1378,6 +1529,7 @@
           v.dataset.src = item.clip;
           if (item.caption) v.setAttribute('aria-label', item.caption);
           cfig.appendChild(v);
+          addTag(cfig, item);
           if (item.caption) {
             var ccap = document.createElement('figcaption');
             ccap.textContent = item.caption;
@@ -1415,7 +1567,32 @@
         img.alt = item.alt || (project.title + ' additional project image');
         img.loading = 'lazy';
         sizeImg(img, item.src);   // reserve the box - see IMG_DIMS
+        /* A caption or a before/after tag turns the still into a figure. */
+        if (item.caption || item.tag) {
+          var ifig = document.createElement('figure');
+          ifig.className = 'gallery__detail-figure';
+          ifig.appendChild(img);
+          addTag(ifig, item);
+          if (item.caption) {
+            var icap = document.createElement('figcaption');
+            icap.textContent = item.caption;
+            ifig.appendChild(icap);
+          }
+          return ifig;
+        }
         return img;
+      }
+
+      /* `tag: 'before' | 'after'` pastes a large label on the frame's top
+         corner. Left readable to assistive tech: the captions describe the
+         subject and rely on the tag to say which side of the change it is. */
+      function addTag(fig, item) {
+        if (!item.tag) return;
+        var tag = document.createElement('span');
+        tag.className = 'gallery__tag gallery__tag--' + item.tag;
+        tag.textContent = item.tag;
+        fig.classList.add('has-tag');
+        fig.insertBefore(tag, fig.firstChild);
       }
 
       /* Fetch AND playback are both gated on approaching the viewport, and

@@ -33,8 +33,11 @@ hard-code hex:
 `--ink #252926` `--paper #f6f5ed` `--newsprint #fcf6f0` `--linen` `--ash` `--slate`
 `--coral #ff785a` `--chartreuse #bed230` `--acid #d2f024`
 
-Faces: Ivy Presto Display / Text, Alternate Gothic No.3D, Michigan Signature,
-plus Jacquard 24 from Google Fonts.
+Faces: Alternate Gothic No.3D for every headline, Miller Text for body copy
+only (never a headline, no faked slant), Michigan Signature, plus Jacquard 24
+from Google Fonts. Miller Text comes from Adobe Fonts kit `vbz6vxn` and cannot
+be self-hosted; a new domain must be added to that kit or it falls back to
+Georgia. The `/portfolio` page still carries its own Ivy Presto files.
 
 ## Structure — this is a ONE-PAGE site
 There are no separate work/services/about/contact pages. `dist/index.html` is the
@@ -59,7 +62,7 @@ dist/
   assets/
     css/site.css          all styling
     js/site.js            scroll choreography, studio slideshow, form submit
-    fonts/                the 5 faces actually used
+    fonts/                the 2 self-hosted faces (gothic, script)
     img/                  hero art, textures, studio frames, logo
   portfolio/              standalone graphic-design portfolio
 netlify.toml              publish dist verbatim, command = "" (do not remove)

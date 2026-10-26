@@ -9,21 +9,10 @@
   src: url("../fonts/AlternateGothicNo3D-Regular.otf") format("opentype");
   font-weight: 400; font-style: normal; font-display: swap;
 }
-@font-face {
-  font-family: "Ivy Presto Display";
-  src: url("../fonts/IvyPrestoDisplay-Thin.otf") format("opentype");
-  font-weight: 200; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: "Ivy Presto Text";
-  src: url("../fonts/IvyPrestoText-Light.otf") format("opentype");
-  font-weight: 300; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: "Ivy Presto Text";
-  src: url("../fonts/IvyPrestoText-Regular.otf") format("opentype");
-  font-weight: 400; font-style: normal; font-display: swap;
-}
+/* Miller Text (body copy only) is not declared here. Adobe Fonts serves it
+   from kit vbz6vxn, linked in index.html; its license does not allow the
+   files to be self-hosted. Roman, Italic, Bold and Bold Italic, as
+   "miller-text" at 400 and 700. */
 @font-face {
   font-family: "Michigan Signature";
   src: url("../fonts/MichiganSignature.ttf") format("truetype");
@@ -49,8 +38,8 @@
   --rule: rgba(37, 41, 38, .18);
   --rule-ink: rgba(246, 245, 237, .2);
 
-  --font-display:  "Ivy Presto Display", Georgia, serif;
-  --font-text:     "Ivy Presto Text", Georgia, serif;
+  /* Serif is for body copy only. Every headline is the gothic. */
+  --font-text:     "miller-text", Georgia, serif;
   --font-gothic:   "Alternate Gothic No3", "Oswald", "Arial Narrow", sans-serif;
   --font-script:   "Michigan Signature", "Snell Roundhand", cursive;
 
@@ -613,29 +602,28 @@ p { margin: 0; text-wrap: pretty; }
       below animates `transform`, and a transform here would simply be
       overwritten by it. `rotate` is a separate property that composes with it.
 
-   2. The cycle length MUST equal PROJECTS.length in site.js - currently 6.
+   2. The cycle length MUST equal PROJECTS.length in site.js - currently 8.
       The rail renders three copies of the set (lead clones, real set, trail
       clones) and the infinite loop jumps by exactly one set width. At any
       other cycle length a project's three copies carry different angles, so a
       card visibly snaps to a new angle at the jump - which is precisely what
       makes the loop seam, otherwise invisible, visible.
 
-      ADDING OR REMOVING A PROJECT MEANS CHANGING THE 7n BELOW AND ADDING OR
-      REMOVING A STOP. Stepped through twice now: 5n -> 6n when ESTACA was
-      added, 6n -> 7n when BELAY was.
+      ADDING OR REMOVING A PROJECT MEANS CHANGING THE 8n BELOW AND ADDING OR
+      REMOVING A STOP. Stepped through three times now: 5n -> 6n when ESTACA
+      was added, 6n -> 7n when BELAY was, 7n -> 8n for Wilson's Bakery.
 
-      The seventh angle is deliberately the gentlest. Seven is odd, so a cycle
-      of alternating signs cannot close on itself - somewhere in the loop two
-      same-sign cards must sit next to each other. Putting the flattest value
-      (-0.7) immediately before the steepest (-2) makes that unavoidable pair
-      read as an easing rather than a repeat. */
-.gallery__card:nth-child(7n+1) { rotate: -2deg; }
-.gallery__card:nth-child(7n+2) { rotate: 1.3deg; }
-.gallery__card:nth-child(7n+3) { rotate: -1deg; }
-.gallery__card:nth-child(7n+4) { rotate: 2.1deg; }
-.gallery__card:nth-child(7n+5) { rotate: -1.6deg; }
-.gallery__card:nth-child(7n+6) { rotate: 0.9deg; }
-.gallery__card:nth-child(7n+7) { rotate: -0.7deg; }
+      Eight is even, so the signs alternate all the way round and the loop
+      closes cleanly. At seven the flattest value (-0.7) had to sit before the
+      steepest (-2) to hide a same-sign pair. The eighth stop removes that pair. */
+.gallery__card:nth-child(8n+1) { rotate: -2deg; }
+.gallery__card:nth-child(8n+2) { rotate: 1.3deg; }
+.gallery__card:nth-child(8n+3) { rotate: -1deg; }
+.gallery__card:nth-child(8n+4) { rotate: 2.1deg; }
+.gallery__card:nth-child(8n+5) { rotate: -1.6deg; }
+.gallery__card:nth-child(8n+6) { rotate: 0.9deg; }
+.gallery__card:nth-child(8n+7) { rotate: -0.7deg; }
+.gallery__card:nth-child(8n+8) { rotate: 1.6deg; }
 
 /* Rotation is decoration, same as the drift. */
 @media (prefers-reduced-motion: reduce) {
@@ -709,32 +697,44 @@ p { margin: 0; text-wrap: pretty; }
   display: block;
 }
 
+/* Labels carry their own ground: the title on an acid chip, the category on
+   an ink one, the same pair as the before/after tags. This replaced an ink
+   fade behind white type, which failed on every light cover (ESTACA and
+   BELAY went white on white) and was a gradient the brief rules out. A chip
+   reads on any image, so no cover needs special handling. */
 .gallery__card-overlay {
   position: absolute;
   inset: auto 0 0 0;
-  padding: 20px 20px 18px;
-  background: linear-gradient(to top, rgba(37, 41, 38, .85), rgba(37, 41, 38, 0) 70%);
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
   text-align: left;
 }
 
 .gallery__card-title {
-  margin: 0 0 4px;
+  margin: 0;
+  padding: 5px 9px 3px;
   font-family: var(--font-gothic);
   font-size: 20px;
   line-height: 1.05;
   letter-spacing: .01em;
   text-transform: uppercase;
-  color: var(--newsprint);
+  color: var(--ink);
+  background: var(--acid);
   font-weight: 400;
 }
 
 .gallery__card-category {
   margin: 0;
+  padding: 4px 8px 3px;
   font-family: var(--font-gothic);
   font-size: 11px;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: rgba(246, 245, 237, .72);
+  color: var(--paper);
+  background: var(--ink);
 }
 
 @media (min-width: 700px) {
@@ -967,31 +967,40 @@ p { margin: 0; text-wrap: pretty; }
   display: block;
 }
 
+/* Same chips as the card, scaled up, so the open transition grows one
+   label into the other rather than swapping styles mid-flight. */
 .gallery__detail-overlay {
   position: absolute;
   inset: auto 0 0 0;
-  padding: 24px var(--gutter) 28px;
-  background: linear-gradient(to top, rgba(37, 41, 38, .85), rgba(37, 41, 38, 0) 70%);
+  padding: 0 var(--gutter) 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .gallery__detail-title {
-  margin: 0 0 6px;
+  margin: 0;
+  padding: 7px 12px 4px;
   font-family: var(--font-gothic);
   font-size: clamp(28px, 6vw, 48px);
   line-height: 1;
   letter-spacing: .01em;
   text-transform: uppercase;
-  color: var(--newsprint);
+  color: var(--ink);
+  background: var(--acid);
   font-weight: 400;
 }
 
 .gallery__detail-category {
   margin: 0;
+  padding: 5px 10px 4px;
   font-family: var(--font-gothic);
   font-size: 12px;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: rgba(246, 245, 237, .72);
+  color: var(--paper);
+  background: var(--ink);
 }
 
 .gallery__detail-body {
@@ -1017,6 +1026,9 @@ p { margin: 0; text-wrap: pretty; }
   font-size: 17px;
   line-height: 1.6;
   color: var(--ink);
+  /* Descriptions are plain strings set via textContent; this lets a \n\n in
+     the data read as a paragraph break instead of collapsing into one block. */
+  white-space: pre-line;
 }
 
 .gallery__detail-gallery {
@@ -1056,8 +1068,144 @@ p { margin: 0; text-wrap: pretty; }
   border-radius: 8px;
   background: var(--ink);
 }
+/* A still with a label under it. */
+.gallery__detail-figure { margin: 0; }
+
+/* Before / after tag, pasted onto the top corner of the frame. The caption
+   underneath is too small and too far away to carry the comparison on its
+   own; this reads at a glance even mid-scroll. Ink for the old, acid for the
+   new, slightly askew like the rest of the paste-ups on the page. */
+.gallery__detail-figure,
+.gallery__detail-clip { position: relative; }
+
+/* The tag hangs half off the top edge so it never covers a logo or nav in
+   the screenshot underneath; the tagged frame drops down to make room. */
+.gallery__detail-figure.has-tag,
+.gallery__detail-clip.has-tag { margin-top: 18px; }
+
+.gallery__tag {
+  position: absolute;
+  top: -.75em;
+  left: 16px;
+  z-index: 1;
+  padding: 6px 12px 4px;
+  font-family: var(--font-gothic);
+  font-size: clamp(18px, 2.6vw, 30px);
+  line-height: 1;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  rotate: -2deg;
+  pointer-events: none;
+}
+.gallery__tag--before { background: var(--ink);  color: var(--paper); }
+.gallery__tag--after  { background: var(--acid); color: var(--ink); }
+/* The same tag set in the flow, heading a panel's text column. */
+.gallery__tag--inline { position: static; display: inline-block; }
+
+/* ---------- Before / after panels ----------
+   Stacked on phones. From 900px the media takes three fifths and the text
+   two, and the 'after' panel swaps sides so the pair reads as a turn. */
+.gallery__panel {
+  display: grid;
+  gap: 28px;
+  margin-top: 24px;
+}
+/* Stacked, the tag has to come first, or the 'after' media lands under the
+   'before' list and reads as part of it. */
+.gallery__panel-text { order: -1; }
+@media (min-width: 900px) {
+  .gallery__panel {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .gallery__panel-text { order: 0; }
+  .gallery__panel--after { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+  .gallery__panel--after .gallery__panel-media { order: 2; }
+}
+
+.gallery__panel-title {
+  margin: 16px 0 20px;
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  font-size: clamp(32px, 3.8vw, 46px);
+  line-height: .95;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.gallery__panel-points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: point;
+  display: grid;
+  gap: 16px;
+}
+.gallery__panel-points li {
+  position: relative;
+  padding-left: 40px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.gallery__panel-points li::before {
+  counter-increment: point;
+  content: counter(point, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  padding: 3px 5px 1px;
+  font-family: var(--font-gothic);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: .08em;
+}
+.gallery__panel--before li::before { background: var(--ink);  color: var(--paper); }
+.gallery__panel--after  li::before { background: var(--acid); color: var(--ink); }
+.gallery__panel-points strong {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* Desktop and phone in one grid cell. The cell is as tall as whichever
+   runs lower, so nothing needs a fixed aspect ratio; the phone's top margin
+   is a percentage of the width, so the overlap scales with the panel. */
+.gallery__devices { display: grid; }
+.gallery__devices > * { grid-area: 1 / 1; }
+/* Scoped under .gallery__detail-gallery to outrank its img { width: 100% }. */
+.gallery__detail-gallery .gallery__device--desktop {
+  width: 84%;
+  align-self: start;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(37, 41, 38, .16);
+}
+.gallery__detail-gallery .gallery__device--phone {
+  width: 31%;
+  justify-self: end;
+  margin-top: 18%;
+  border: 5px solid var(--ink);
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: 0 18px 40px rgba(37, 41, 38, .3);
+}
+.gallery__device--phone video { border-radius: 0; }
+/* Captions stay as the clips' accessible names; visually the panel's own
+   text says what is on screen. */
+.gallery__devices figcaption { display: none; }
+.gallery__devices img.gallery__device--desktop,
+.gallery__devices .gallery__device--desktop video { border-radius: 8px; }
+
 .gallery__detail-video figcaption,
-.gallery__detail-clip figcaption {
+.gallery__detail-clip figcaption,
+.gallery__detail-figure figcaption {
   margin-top: 10px;
   font-family: var(--font-gothic);
   font-size: 11px;
@@ -1086,6 +1234,8 @@ p { margin: 0; text-wrap: pretty; }
 .gallery__detail-clip--wide   video { aspect-ratio: 16 / 9; }
 .gallery__detail-clip--square video { aspect-ratio: 1 / 1; }
 .gallery__detail-clip--tall   video { aspect-ratio: 3 / 4; }
+/* A phone screen recording, shown whole rather than cropped. */
+.gallery__detail-clip--phone  video { aspect-ratio: 9 / 16; }
 
 /* Two entries abreast. Stacked until there is genuinely room - a 3:4 clip in
    half a phone screen is a postage stamp. align-items:start lets a tall and a
@@ -1491,14 +1641,17 @@ p { margin: 0; text-wrap: pretty; }
 /* The section's chartreuse accent used to live on the "we answer our own
    email" script line below the reasons. That line is gone, so the green moves
    onto the one word it was always about. 8.73:1 on the ink ground. */
-.studio__title em { color: var(--chartreuse); }
+/* Upright: the gothic has no italic, and a browser-faked slant is not wanted. */
+.studio__title em { color: var(--chartreuse); font-style: normal; }
 
 .studio__title {
   margin: 0 0 40px;
-  font-family: var(--font-display);
-  font-weight: 200;
-  font-size: clamp(40px, 6vw, 76px);
-  line-height: .98;
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 92px);
+  line-height: .9;
+  letter-spacing: .01em;
+  text-transform: uppercase;
   color: var(--paper);
   max-width: 620px;
 }
@@ -1768,7 +1921,7 @@ p { margin: 0; text-wrap: pretty; }
   width: 100%;
   min-height: 44px;
   font-family: var(--font-text);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 16px;
   color: var(--ink);
   background: transparent;
@@ -1819,14 +1972,18 @@ p { margin: 0; text-wrap: pretty; }
 
 /* Sent state - replaces the form in place. */
 .form__sent {
-  font-family: var(--font-display);
-  font-weight: 200;
-  font-size: clamp(32px, 5vw, 48px);
-  line-height: 1.1;
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  font-size: clamp(36px, 5.5vw, 56px);
+  line-height: .95;
+  letter-spacing: .01em;
+  text-transform: uppercase;
   color: var(--ink);
 }
 .form__sent p {
   font-family: var(--font-text);
+  text-transform: none;   /* the parent is a gothic headline; this is body copy */
+  letter-spacing: 0;
   font-size: 17px;
   line-height: 1.55;
   color: var(--slate);
