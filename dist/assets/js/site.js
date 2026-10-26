@@ -638,7 +638,7 @@
            blue. Centred and sized to survive both crops: the 3:4 card and
            the 2.29:1 detail band. */
         coverImage: '/assets/img/work/wilsons/cover.jpg',
-        description: 'Wilson’s Bakery has fed Warner Robins since 1953. Three generations of Middle Georgia birthdays came out of that bakery case, and everyone in town knows the Fingernut Cookie.\n\nThe brand held up. The sticker on every box already belonged to the town, so we kept what people love and cleaned it up. One sticker became a set of seven marks for boxes, signs, shirts and screens.\n\nThe website needed real work. We rebuilt it around one job: getting a box of Fingernuts from someone’s phone to the pickup counter.',
+        description: 'Wilson’s Bakery has fed Warner Robins since 1953. Three generations of Middle Georgia birthdays came out of that bakery case, and everyone in town knows the Fingernut Cookie.\n\nThe brand didn’t need saving. The sticker on every box already belonged to the town, so we kept it and cleaned it up. Then we built it out into seven marks for boxes, signs, shirts and screens.\n\nThe website was the real problem. It was hard to use on a phone, and it sent orders off to other companies’ pages. We rebuilt it around one job: getting a box of Fingernuts from someone’s phone to the pickup counter.',
         galleryImages: [
           { heading: 'The sticker' },
           /* Both square, so the pair sits level. */
@@ -725,7 +725,7 @@
         /* The subject sits right of centre; a centred crop cuts the glass
            out of the 3:4 card. See the [data-focus] rules in site.css. */
         focus: 'right',
-        description: 'A cold Diet Coke and five minutes alone. We gave the ritual a brand: crest, serif, and all the ceremony a vice deserves. Identity, packaging, menu, and a truck.',
+        description: 'The internet calls a cold Diet Coke from the fridge a fridge cig. It’s a five-minute break that feels a little like a vice. We turned the joke into a real brand, with a crest, a serif, and all the ceremony a vice deserves. We designed the identity, the packaging, the menu and the delivery truck.',
         galleryImages: [
           { src: '/assets/img/work/fridge-cig/board-1.jpg',
             alt: 'Fridge Cig identity system: primary wordmark, circular badge lockup and gold crest, shown beside the brand\u2019s pin-up illustration.' },
@@ -748,7 +748,7 @@
         title: 'Decatur City Church',
         category: 'Brand expansion',
         coverImage: '/assets/img/work/decatur-city/cover.jpg',
-        description: 'Brands keep expanding as the organizations behind them grow. Decatur City Church has added programs and events for years, and we have partnered with them through each expansion. We designed a run club identity, a serve mailer, summer motion graphics, and a full sub-brand for their Porchfest street festival. Every piece extends the same visual system, so the church stays recognizable as it grows.',
+        description: 'Decatur City Church keeps growing, and its brand has to grow with it. We have partnered with the church through years of new programs and events. The recent work includes a run club identity, a serve mailer, summer motion graphics, and a full sub-brand for their Porchfest street festival. Every piece extends the same visual system, so the church stays recognizable no matter how much it adds.',
         galleryImages: [
           { heading: 'The church brand' },
           { src: '/assets/img/work/decatur-city/board-runclub.jpg',
@@ -776,7 +776,7 @@
         title: 'O Come, O Come Emmanuel',
         category: 'Music film',
         coverImage: '/assets/img/work/emmanuel/cover.jpg',
-        description: 'The tune is centuries old. The arrangement is not. We re-scored it, recorded it, cast it, shot it and cut it.',
+        description: 'O Come, O Come Emmanuel is centuries old. We gave it a new arrangement and a film to match. HUM re-scored the hymn, recorded it, cast the performers, shot the film and cut it.',
         galleryImages: [
           { video: 'pl3AEd7d-m0', title: 'O Come, O Come Emmanuel: the film' },
           { heading: 'Inside the film' },
@@ -815,7 +815,7 @@
         title: 'Decatur Music Hall of Fame',
         category: 'Identity & pitch',
         coverImage: '/assets/img/work/hall-of-fame/cover.jpg',
-        description: 'A town that turned out Indigo Girls and John Mayer by accident, with nothing built to keep the next one. We made the mark, the voice, the merch, and the eleven pages that make the case for a building.',
+        description: 'The tiny City of Decatur birthed a lot of music superstars, including John Mayer, Sugarland, the Indigo Girls and Tyler Childers. But the city was resting on nostalgia, with nothing built for the next generation. HUM partnered with the City to concept a monument to the past that could double as an incubator for upcoming talent. We designed the brand, the voice and the merch, and we wrote and designed the eleven-page pitch deck that makes the case for the building.',
         galleryImages: [
           { strip: {
             label: 'The pitch deck: eleven pages',
@@ -849,7 +849,7 @@
            card; 30% lifts the hero band so the bottle's top is not sliced off.
            See the [data-focus="right-high"] rule in site.css. */
         focus: 'right-high',
-        description: 'We didn\'t know what "bacanora" was either until this client approached us to brand a line of spirits. Apparently, it\'s a lil\' less smoky than mezcal and more flavorful than tequila\u2026 and it\'s delicious and now in national distribution.\n\nSince it was illegal in Mexico until 1992, we crafted a brand persona for people who would rather leave the club than wait behind a rope. We owned the strategy, positioning, identity, packaging, and the bottle itself, modeled in 3d before anyone blew glass. Built on Sonora\'s heat, dust, and outlaw spirit.',
+        description: 'HUM took ESTACA from an investor pitch deck to national production. We shepherded the whole thing, start to finish.\n\nESTACA sells bacanora, a Sonoran agave spirit most Americans have never heard of. It’s less smoky than mezcal and more flavorful than tequila. We hadn’t heard of it either until ESTACA asked us to brand it.\n\nBacanora was illegal in Mexico until 1992, and that outlaw history became the brand. We built a persona for people who would rather leave the club than wait behind a rope. HUM owned the strategy, positioning, identity and packaging. We designed the bottle and modeled it in 3D before anyone blew glass. Today ESTACA is in national distribution.',
         galleryImages: [
           { heading: 'The world' },
           /* Both 16:9, so they sit level rather than ragged. */
@@ -910,7 +910,7 @@
         title: 'BELAY Solutions',
         category: 'Web & content',
         coverImage: '/assets/img/work/belay/cover.jpg',
-        description: 'BELAY sells executives their time back. We rewrote the landing pages, reorganised the content around them, and built the campaign pages the marketing calendar kept asking for.',
+        description: 'BELAY sells executives their time back. Their website needed to make that case faster. We rewrote the landing pages, reorganized the content around the executive reader, and built the campaign pages the marketing calendar kept asking for.',
         galleryImages: [
           { src: '/assets/img/work/belay/shot-01.jpg',
             alt: 'Direct mail pieces carrying the line \u201cOne trusted partner. Every back-office need.\u201d' },
@@ -936,7 +936,7 @@
         title: 'The Secret Show',
         category: 'Event identity',
         coverImage: '/assets/img/work/secret-show/cover.jpg',
-        description: 'A live show you had to hear about from someone else. We named it, drew the mark, and built a system that gives away almost nothing. Posters, screens, signage, social, none of it explaining itself.',
+        description: 'The Secret Show is a live show you only hear about from a friend. The brand had to keep that secret. We named it, drew the mark, and built a system that gives away almost nothing. The posters, screens, signage and social posts never explain themselves.',
         galleryImages: [
           { heading: 'The mark' },
           { src: '/assets/img/work/secret-show/wordmark.jpg',
