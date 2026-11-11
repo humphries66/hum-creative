@@ -599,6 +599,18 @@
       '/assets/img/work/hall-of-fame/deck-09.jpg':       [801, 1037],
       '/assets/img/work/hall-of-fame/deck-10.jpg':       [801, 1037],
       '/assets/img/work/hall-of-fame/deck-11.jpg':       [801, 1037],
+      '/assets/img/work/malas/badges.jpg':               [1800, 1012],
+      '/assets/img/work/malas/bottles.jpg':              [1600, 1067],
+      '/assets/img/work/malas/colour.jpg':               [1800, 1012],
+      '/assets/img/work/malas/cover.jpg':                [1400, 787],
+      '/assets/img/work/malas/margs.jpg':                [1800, 1012],
+      '/assets/img/work/malas/mark.jpg':                 [1800, 1012],
+      '/assets/img/work/malas/overprint.jpg':            [1800, 1012],
+      '/assets/img/work/malas/pattern.jpg':              [1800, 1012],
+      '/assets/img/work/malas/pin.jpg':                  [1800, 708],
+      '/assets/img/work/malas/skeleton.jpg':             [1800, 1012],
+      '/assets/img/work/malas/tshirt.jpg':               [1600, 1067],
+      '/assets/img/work/malas/type.jpg':                 [1800, 1012],
       '/assets/img/work/secret-show/cover.jpg':          [1200, 670],
       '/assets/img/work/secret-show/signage.jpg':        [1600, 1066],
       '/assets/img/work/secret-show/social.jpg':         [1600, 900],
@@ -714,6 +726,63 @@
                     'Order-ahead checkout', 'Square POS integration',
                     'Pickup scheduling'],
             note: 'Warner Robins, GA'
+          } }
+        ]
+      },
+      {
+        id: 'malas',
+        title: 'MALAS',
+        category: 'Identity & merch',
+        /* The chartreuse badge centred on the MALAS charcoal (#292929), as on
+           the brand book's closing page. 540px wide, so it sits whole inside
+           both the 3:4 card (590px of width) and the 2.29:1 detail band. */
+        coverImage: '/assets/img/work/malas/cover.jpg',
+        description: 'A group of women met in a dance class and formed their own clique. They call themselves MALAS, which translates to the baddies. We gave the clique a brand: the logo, a badge system, a skeleton with a margarita, and the merch to wear it on.\n\nThe palette is bright and every colour is interchangeable. The women in MALAS come from different cultures and bring different personalities. The system lets each of them mix the colours into her own version.',
+        galleryImages: [
+          { heading: 'The mark' },
+          { src: '/assets/img/work/malas/mark.jpg',
+            alt: 'The MALAS primary mark: heavy purple and green lettering with a small skull, Dance isn’t optional underneath, on an extruded black sticker shape, shown on ink with three colourways beside it.' },
+          { src: '/assets/img/work/malas/badges.jpg',
+            alt: 'Four round MALAS badges on ink, in chartreuse, purple, blue and green: the skeleton in the centre and Dance isn’t optional around the rim.' },
+          { heading: 'The skeleton' },
+          /* Every board in this gallery is a 16:9 page from the brand book,
+             so pairs sit level. */
+          { row: [
+            { src: '/assets/img/work/malas/skeleton.jpg',
+              alt: 'The skeleton illustration: a grinning skull over crossed bones, one hand throwing a sign and the other holding a margarita, in chartreuse on ink and as a black knockout on purple.' },
+            { src: '/assets/img/work/malas/overprint.jpg',
+              alt: 'The skeleton cropped huge and overprinted in green, blue and teal across chartreuse and purple fields.' }
+          ] },
+          { row: [
+            { src: '/assets/img/work/malas/margs.jpg',
+              alt: 'Secondary artwork: the chartreuse skeleton with Let’s get margs on Friday, but early? curved around it.' },
+            { src: '/assets/img/work/malas/pattern.jpg',
+              alt: 'A repeat pattern of skulls and crossed-bone margarita hands in chartreuse and purple on ink.' }
+          ] },
+          { heading: 'The system' },
+          { row: [
+            { src: '/assets/img/work/malas/colour.jpg',
+              alt: 'The MALAS palette as full-height bands: chartreuse, green, cyan, periwinkle, purple and near-black, each with its values.' },
+            { src: '/assets/img/work/malas/type.jpg',
+              alt: 'Typography: Montserrat Black for the name, with Bold and Regular for everything else.' }
+          ] },
+          { doc: '/portfolio/assets/docs/malas-brand-guidelines.pdf',
+            label: 'Read the brand guidelines',
+            meta: 'PDF · 13 pages · 3.8MB' },
+          { heading: 'The merch' },
+          /* Both 3:2, so they sit level. */
+          { row: [
+            { src: '/assets/img/work/malas/tshirt.jpg',
+              alt: 'A charcoal MALAS t-shirt on a hanger against a volleyball net, printed with the chartreuse skeleton and its margs line.' },
+            { src: '/assets/img/work/malas/bottles.jpg',
+              alt: 'Five MALAS water bottles in green, blue, purple, chartreuse and cyan, each with a round badge.' }
+          ] },
+          { src: '/assets/img/work/malas/pin.jpg',
+            alt: 'The MALAS primary mark as an enamel pin: purple lettering and a white skull on black, edged in silver.' },
+          { credits: {
+            items: ['Visual identity + logo', 'Illustration', 'Badge system',
+                    'Palette + type system', 'Pattern', 'Merch design',
+                    'Brand guidelines']
           } }
         ]
       },
