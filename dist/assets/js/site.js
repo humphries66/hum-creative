@@ -599,6 +599,7 @@
       '/assets/img/work/hall-of-fame/deck-09.jpg':       [801, 1037],
       '/assets/img/work/hall-of-fame/deck-10.jpg':       [801, 1037],
       '/assets/img/work/hall-of-fame/deck-11.jpg':       [801, 1037],
+      '/assets/img/work/malas/al-frente.jpg':            [1800, 1012],
       '/assets/img/work/malas/badges.jpg':               [1800, 1012],
       '/assets/img/work/malas/bottles.jpg':              [1600, 1067],
       '/assets/img/work/malas/colour.jpg':               [1800, 1012],
@@ -759,6 +760,8 @@
             { src: '/assets/img/work/malas/pattern.jpg',
               alt: 'A repeat pattern of skulls and crossed-bone margarita hands in chartreuse and purple on ink.' }
           ] },
+          { src: '/assets/img/work/malas/al-frente.jpg',
+            alt: '¡Las malas al frente! in heavy chartreuse italic caps, overprinted on a purple skeleton holding a margarita, on charcoal.' },
           { heading: 'The system' },
           { row: [
             { src: '/assets/img/work/malas/colour.jpg',
